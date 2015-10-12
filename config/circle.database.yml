@@ -1,0 +1,9 @@
+test:
+  database: circle_test
+  adapter: postgresql
+  encoding: utf8
+  pool: 5
+  username: ubuntu
+  password:
+  host: localhost
+  port: 5432

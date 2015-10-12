@@ -1,0 +1,23 @@
+development: &default
+  adapter: postgresql
+  encoding: utf8
+  pool: 5
+  port: 5432
+  username: postgres
+  password: password
+  host: postgres
+
+development:
+  <<: *default
+  database: draft_rails_development
+
+test:
+  <<: *default
+  database: draft_rails_test
+
+production:
+  <<: *default
+  database: draft_rails_production
+  username: <%= ENV['APP_DATABASE_USERNAME'] %>
+  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
+  # url: <%= ENV['DATABASE_URL'] %>
