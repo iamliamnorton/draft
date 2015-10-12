@@ -1,9 +1,8 @@
-FROM iamliamnorton/ruby
+FROM ruby:2.2.3
 MAINTAINER Liam Norton
 
-RUN apk update && apk upgrade \
-  && apk add --update nodejs postgresql-dev yaml-dev \
-  && rm -rf /var/cache/apk/*
+RUN apt-get -y update && apt-get -y upgrade && \
+    apt-get -y --force-yes --no-install-recommends install build-essential libpq-dev
 
 ENV APP_HOME /srv/app/
 RUN mkdir -p $APP_HOME
@@ -12,7 +11,7 @@ WORKDIR $APP_HOME
 COPY Gemfile $APP_HOME
 COPY Gemfile.lock $APP_HOME
 
-RUN bundle install --system
+RUN bundle install
 
 COPY . $APP_HOME
 
