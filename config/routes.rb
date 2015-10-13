@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   resource :lobby,
     only: [:show],
     controller: :lobby
+
+  devise_for :users
 end
