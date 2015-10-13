@@ -4,4 +4,10 @@ Rails.application.routes.draw do
   resource :lobby,
     only: [:show],
     controller: :lobby
+
+  devise_for :users
+
+  resource :credit,
+    only: [:show, :create],
+    controller: :credit
 end

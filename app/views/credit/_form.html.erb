@@ -1,0 +1,18 @@
+<%= render 'shared/errors', target: current_user %>
+
+<%= form_for(
+  current_user,
+  url: credit_path,
+  class: 'form-inline',
+  method: :post
+) do |f| %>
+  <div class="form-group">
+    <%= f.label :credit, class: 'sr-only' %>
+    <div class="input-group">
+      <div class="input-group-addon">$</div>
+      <%= f.number_field :credit, class: 'form-control' %>
+    </div>
+  </div>
+
+  <%= f.submit "Update credit", class: 'btn btn-primary' %>
+<% end %>

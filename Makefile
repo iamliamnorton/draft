@@ -6,7 +6,8 @@ IMAGE = $(REGISTRY)/$(PROJECT):$(TAG)
 
 .PHONY: build
 build:
-	docker build --rm -t $(IMAGE) .
+	docker-compose build && \
+	  docker build --rm -t $(IMAGE) .
 
 .PHONY: test
 test:
@@ -15,7 +16,8 @@ test:
 
 .PHONY: shell
 shell:
-	docker-compose run app bash
+	docker-compose build && \
+	  docker-compose run app bash
 
 .PHONY: run
 run:
@@ -24,4 +26,5 @@ run:
 
 .PHONY: push
 push:
-	docker push $(IMAGE)
+	docker build --rm -t $(IMAGE) . && \
+	  docker push $(IMAGE)
