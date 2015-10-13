@@ -3,6 +3,10 @@ class Guest
     ""
   end
 
+  def credit
+    0
+  end
+
   def guest?
     true
   end

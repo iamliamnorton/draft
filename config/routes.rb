@@ -6,4 +6,8 @@ Rails.application.routes.draw do
     controller: :lobby
 
   devise_for :users
+
+  resource :credit,
+    only: [:show, :create],
+    controller: :credit
 end

@@ -14,6 +14,9 @@ class User < ActiveRecord::Base
     uniqueness: true,
     presence: true
 
+  validates :credit,
+    presence: true
+
   def guest?
     false
   end

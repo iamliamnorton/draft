@@ -7,6 +7,12 @@ RSpec.describe Guest, type: :model do
     it { is_expected.to eq("") }
   end
 
+  describe "#credit" do
+    subject { described_class.new.credit }
+
+    it { is_expected.to eq(0) }
+  end
+
   describe "#guest?" do
     subject { described_class.new.guest? }
 

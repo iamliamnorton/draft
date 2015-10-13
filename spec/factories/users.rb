@@ -4,6 +4,7 @@ FactoryGirl.define do
     password "password"
     password_confirmation "password"
     confirmed_at Time.now
+    credit 1000
 
     factory :admin_user do
       admin true
