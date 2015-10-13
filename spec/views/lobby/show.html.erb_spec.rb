@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "lobby/show.html.erb", type: :view do
-  it "renders" do
+  it "renders with guest" do
+    allow(view).to receive(:current_user) { Guest.new }
+
     render
 
     aggregate_failures do
@@ -10,9 +12,10 @@ RSpec.describe "lobby/show.html.erb", type: :view do
     end
   end
 
-  it "renders user data" do
+  it "renders with user" do
     user = create(:user)
-    sign_in(user)
+
+    allow(view).to receive(:current_user) { user }
 
     render
 

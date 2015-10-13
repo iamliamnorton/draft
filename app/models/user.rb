@@ -13,4 +13,8 @@ class User < ActiveRecord::Base
   validates :email,
     uniqueness: true,
     presence: true
+
+  def guest?
+    false
+  end
 end

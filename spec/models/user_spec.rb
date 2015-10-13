@@ -9,4 +9,10 @@ RSpec.describe User, type: :model do
          validate_uniqueness_of(:email).
          case_insensitive }
   end
+
+  describe "#guest?" do
+    subject { create(:user).guest? }
+
+    it { is_expected.to eq(false) }
+  end
 end
