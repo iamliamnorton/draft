@@ -28,7 +28,7 @@
           <%= contest.entry %>
         </td>
         <td>
-          <%= link_to "BigDog_07", contest %>
+          <%= link_to contest.users.first.try(:email), contest %>
         </td>
         <td>
           <%= contest.cap %>

@@ -38,6 +38,12 @@ RSpec.describe ContestsController, type: :controller do
         }.to change(Contest, :count).by(1)
       end
 
+      it "creates a new Entry" do
+        expect {
+          post :create, {contest: valid_attributes}
+        }.to change(Entry, :count).by(1)
+      end
+
       it "assigns a newly created contest as @contest" do
         post :create, {contest: valid_attributes}
 
@@ -59,6 +65,12 @@ RSpec.describe ContestsController, type: :controller do
         post :create, {contest: invalid_attributes}
 
         expect(assigns(:contest)).to be_a_new(Contest)
+      end
+
+      it "doesn't create a new Entry" do
+        expect {
+          post :create, {contest: invalid_attributes}
+        }.not_to change(Entry, :count)
       end
 
       it "re-renders the 'new' template" do

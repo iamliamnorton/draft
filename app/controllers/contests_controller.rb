@@ -13,7 +13,11 @@ class ContestsController < ApplicationController
   def create
     @contest = Contest.new(contest_params)
 
-    if @contest.save
+    entry = current_user.entries.new(
+      contest: @contest
+    )
+
+    if @contest.save && entry.save!
       redirect_to @contest, notice: 'Contest was successfully created.'
     else
       render :new
