@@ -1,6 +1,11 @@
 class Contest < ActiveRecord::Base
   DEFAULT_CAP = 2
 
+  has_many :entries
+
+  has_many :users,
+    through: :entries
+
   validates :entry,
     presence: true,
     numericality: {

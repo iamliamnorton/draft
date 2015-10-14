@@ -1,4 +1,9 @@
 class User < ActiveRecord::Base
+  has_many :entries
+
+  has_many :contests,
+    through: :entries
+
   devise :database_authenticatable,
     :registerable,
     :recoverable,
