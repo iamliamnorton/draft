@@ -11,10 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151013025051) do
+ActiveRecord::Schema.define(version: 20151014085644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contests", force: :cascade do |t|
+    t.integer  "entry",        null: false
+    t.integer  "cap",          null: false
+    t.datetime "cancelled_at"
+    t.datetime "closed_at"
+    t.datetime "won_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "contests", ["cancelled_at"], name: "index_contests_on_cancelled_at", using: :btree
+  add_index "contests", ["closed_at"], name: "index_contests_on_closed_at", using: :btree
+  add_index "contests", ["won_at"], name: "index_contests_on_won_at", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.boolean  "admin",                  default: false, null: false

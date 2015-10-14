@@ -3,4 +3,10 @@
   <p>
     Welcome <%= current_user.email %>
   </p>
+
+  <p>
+    <%= link_to 'Create Contest', new_contest_path, class: 'btn btn-primary' %>
+  </p>
+
+  <%= render partial: "contests", locals: { contests: @contests } %>
 </div>

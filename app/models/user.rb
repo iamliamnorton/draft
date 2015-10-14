@@ -10,12 +10,16 @@ class User < ActiveRecord::Base
   # :omniauthable,
     :validatable
 
+  # TODO email address validation
   validates :email,
     uniqueness: true,
     presence: true
 
   validates :credit,
-    presence: true
+    presence: true,
+    numericality: {
+      only_integer: true
+    }
 
   def guest?
     false

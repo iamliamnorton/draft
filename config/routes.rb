@@ -10,4 +10,7 @@ Rails.application.routes.draw do
   resource :credit,
     only: [:show, :create],
     controller: :credit
+
+  resources :contests,
+    only: [:show, :new, :create, :destroy]
 end
