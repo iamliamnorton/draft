@@ -12,5 +12,9 @@ Rails.application.routes.draw do
     controller: :credit
 
   resources :contests,
-    only: [:show, :new, :create, :destroy]
+    only: [:show, :new, :create] do
+
+    resources :entries,
+      only: [:create]
+  end
 end

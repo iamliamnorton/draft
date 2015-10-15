@@ -1,7 +1,11 @@
 class User < ActiveRecord::Base
+  has_many :contests
+
   has_many :entries
 
-  has_many :contests,
+  has_many :entered_contests,
+    class_name: "Contest",
+    source: :contest,
     through: :entries
 
   devise :database_authenticatable,
@@ -25,6 +29,14 @@ class User < ActiveRecord::Base
     numericality: {
       only_integer: true
     }
+
+  def involved_in?(contest)
+    contests.include?(contest) || entered_contests.include?(contest)
+  end
+
+  def can_enter?(contest)
+    !involved_in?(contest) && contest.entries_remaining > 0
+  end
 
   def guest?
     false

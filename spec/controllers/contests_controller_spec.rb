@@ -6,16 +6,16 @@ RSpec.describe ContestsController, type: :controller do
   before { sign_in(user) }
 
   let(:valid_attributes) {
-    { entry: 1_00 }
+    attributes_for(:contest)
   }
 
   let(:invalid_attributes) {
-    { entry: 1 }
+    attributes_for(:contest).merge(entry: 1)
   }
 
   describe "GET #show" do
     it "assigns the requested contest as @contest" do
-      contest = Contest.create! valid_attributes
+      contest = user.contests.create! valid_attributes
       get :show, {id: contest.to_param}
 
       expect(assigns(:contest)).to eq(contest)
@@ -24,7 +24,7 @@ RSpec.describe ContestsController, type: :controller do
 
   describe "GET #new" do
     it "assigns a new contest as @contest" do
-      get :new, {}
+      get :new
 
       expect(assigns(:contest)).to be_a_new(Contest)
     end
@@ -36,12 +36,6 @@ RSpec.describe ContestsController, type: :controller do
         expect {
           post :create, {contest: valid_attributes}
         }.to change(Contest, :count).by(1)
-      end
-
-      it "creates a new Entry" do
-        expect {
-          post :create, {contest: valid_attributes}
-        }.to change(Entry, :count).by(1)
       end
 
       it "assigns a newly created contest as @contest" do
@@ -67,35 +61,11 @@ RSpec.describe ContestsController, type: :controller do
         expect(assigns(:contest)).to be_a_new(Contest)
       end
 
-      it "doesn't create a new Entry" do
-        expect {
-          post :create, {contest: invalid_attributes}
-        }.not_to change(Entry, :count)
-      end
-
       it "re-renders the 'new' template" do
         post :create, {contest: invalid_attributes}
 
         expect(response).to render_template("new")
       end
-    end
-  end
-
-  describe "DELETE #destroy" do
-    it "cancels the requested contest" do
-      contest = Contest.create! valid_attributes
-      expect {
-        delete :destroy, {id: contest.to_param}
-      }.to change {
-        Contest.cancelled.count
-      }.by(1)
-    end
-
-    it "redirects to the lobby" do
-      contest = Contest.create! valid_attributes
-      delete :destroy, {id: contest.to_param}
-
-      expect(response).to redirect_to(lobby_url)
     end
   end
 end

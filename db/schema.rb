@@ -17,17 +17,19 @@ ActiveRecord::Schema.define(version: 20151014122117) do
   enable_extension "plpgsql"
 
   create_table "contests", force: :cascade do |t|
-    t.integer  "entry",        null: false
-    t.integer  "cap",          null: false
-    t.datetime "cancelled_at"
+    t.integer  "user_id",                 null: false
+    t.integer  "entry",                   null: false
+    t.integer  "cap",                     null: false
+    t.integer  "min_entries", default: 1, null: false
+    t.integer  "max_entries",             null: false
     t.datetime "closed_at"
     t.datetime "won_at"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
-  add_index "contests", ["cancelled_at"], name: "index_contests_on_cancelled_at", using: :btree
   add_index "contests", ["closed_at"], name: "index_contests_on_closed_at", using: :btree
+  add_index "contests", ["user_id"], name: "index_contests_on_user_id", using: :btree
   add_index "contests", ["won_at"], name: "index_contests_on_won_at", using: :btree
 
   create_table "entries", force: :cascade do |t|
@@ -70,6 +72,7 @@ ActiveRecord::Schema.define(version: 20151014122117) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
+  add_foreign_key "contests", "users"
   add_foreign_key "entries", "contests"
   add_foreign_key "entries", "users"
 end

@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Edit profile", type: :feature do
   it "user can edit profile details" do
-    user = create(:user)
-    sign_in(user)
+    sign_in
 
     visit edit_user_registration_path
 

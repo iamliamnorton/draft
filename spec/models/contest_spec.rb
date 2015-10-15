@@ -5,10 +5,14 @@ RSpec.describe Contest, type: :model do
     it { is_expected.to \
          validate_presence_of(:entry) }
 
-    # TODO use validates_numericality_of when fixed
-
     it { is_expected.to \
          validate_presence_of(:cap) }
+
+    it { is_expected.to \
+         validate_presence_of(:min_entries) }
+
+    it { is_expected.to \
+         validate_presence_of(:max_entries) }
   end
 
   describe ".open" do
@@ -17,7 +21,6 @@ RSpec.describe Contest, type: :model do
 
       create(:contest_won)
       create(:contest_closed)
-      create(:contest_cancelled)
 
       aggregate_failures do
         expect(Contest.open).to include(open_contest)
@@ -26,18 +29,12 @@ RSpec.describe Contest, type: :model do
     end
   end
 
-  describe ".cancelled" do
-    it "returns cancelled contests" do
-      cancelled_contest = create(:contest_cancelled)
+  describe "#entries_remaining" do
+    it "returns remaining entry count" do
+      contest = create(:contest, max_entries: 3)
+      create(:entry, contest: contest)
 
-      create(:contest)
-      create(:contest_won)
-      create(:contest_closed)
-
-      aggregate_failures do
-        expect(Contest.cancelled).to include(cancelled_contest)
-        expect(Contest.cancelled.count).to eq(1)
-      end
+      expect(contest.entries_remaining).to eq(2)
     end
   end
 end

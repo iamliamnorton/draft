@@ -1,17 +1,19 @@
 class CreateContests < ActiveRecord::Migration
   def change
     create_table :contests do |t|
-      t.integer :entry,                 null: false
-      t.integer :cap,                   null: false
+      t.references :user, null: false, index: true, foreign_key: true
 
-      t.timestamp :cancelled_at
+      t.integer :entry,             null: false
+      t.integer :cap,               null: false
+      t.integer :min_entries,       null: false,    default: 1
+      t.integer :max_entries,       null: false
+
       t.timestamp :closed_at
       t.timestamp :won_at
 
       t.timestamps null: false
     end
 
-    add_index :contests, :cancelled_at
     add_index :contests, :closed_at
     add_index :contests, :won_at
   end

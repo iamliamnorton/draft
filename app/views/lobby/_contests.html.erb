@@ -1,55 +1,45 @@
-<% if @contests.any? %>
-  <table class="table">
+<table class="table">
+  <tr>
+    <th>
+      Entry
+    </th>
+    <th>
+      Vs
+    </th>
+    <th>
+      Cap
+    </th>
+    <th>
+      Closed
+    </th>
+    <th>
+      Won
+    </th>
+    <th>
+    </th>
+  </tr>
+  <% contests.each do |contest| %>
     <tr>
-      <th>
-        Entry
-      </th>
-      <th>
-        Vs
-      </th>
-      <th>
-        Cap
-      </th>
-      <th>
-        Cancelled
-      </th>
-      <th>
-        Closed
-      </th>
-      <th>
-        Won
-      </th>
-      <th>
-      </th>
+      <td>
+        <%= link_to contest.user.email, contest %>
+      </td>
+      <td>
+        <%= contest.entry %>
+      </td>
+      <td>
+        <%= contest.cap %>
+      </td>
+      <td>
+        <%= contest.closed_at || "na" %>
+      </td>
+      <td>
+        <%= contest.won_at || "na" %>
+      </td>
+      <td>
+        <%= link_to "View",
+          contest_path(contest),
+          class: 'btn btn-primary' %>
+      </td>
     </tr>
-    <% contests.each do |contest| %>
-      <tr>
-        <td>
-          <%= contest.entry %>
-        </td>
-        <td>
-          <%= link_to contest.users.first.try(:email), contest %>
-        </td>
-        <td>
-          <%= contest.cap %>
-        </td>
-        <td>
-          <%= contest.cancelled_at || "na" %>
-        </td>
-        <td>
-          <%= contest.closed_at || "na" %>
-        </td>
-        <td>
-          <%= contest.won_at || "na" %>
-        </td>
-        <td>
-          <%= link_to "Cancel",
-            contest_path(contest),
-            data: { confirm: "Are you sure?" },
-            method: :delete,
-            class: 'btn btn-danger' %>
-        </td>
-      </tr>
-    <% end %>
-  </table>
-<% end %>
+  <% end %>
+</table>

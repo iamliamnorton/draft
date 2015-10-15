@@ -13,9 +13,5 @@ RSpec.describe ContestsController, type: :routing do
     it "routes to #create" do
       expect(:post => "/contests").to route_to("contests#create")
     end
-
-    it "routes to #destroy" do
-      expect(:delete => "/contests/1").to route_to("contests#destroy", id: "1")
-    end
   end
 end
