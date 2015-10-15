@@ -19,7 +19,7 @@ RSpec.describe "Signing in", type: :feature do
     click_button 'Sign in'
     expect(page).to have_content 'Signed in successfully.'
 
-    click_link 'Account'
+    click_link user.email
     click_link 'Sign out'
     expect(page).to have_content 'Signed out successfully.'
   end

@@ -27,16 +27,9 @@ class User < ActiveRecord::Base
   validates :credit,
     presence: true,
     numericality: {
-      only_integer: true
+      only_integer: true,
+      greater_than_or_equal_to: 0
     }
-
-  def involved_in?(contest)
-    contests.include?(contest) || entered_contests.include?(contest)
-  end
-
-  def can_enter?(contest)
-    !involved_in?(contest) && contest.entries_remaining > 0
-  end
 
   def guest?
     false

@@ -2,14 +2,17 @@ class EntriesController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    if current_user.can_enter?(contest)
-      contest.entries.create!(user: current_user)
-      flash[:notice] = 'Contest was successfully joined.'
-    else
-      flash[:notice] = 'Contest cannot be joined.'
-    end
+    contest_entry = ContestEntryForm.new(
+      contest: contest,
+      user: current_user
+    )
 
-    redirect_to contest
+    if contest_entry.valid? && contest_entry.save
+      redirect_to contest, notice: 'Contest was successfully entered.'
+    else
+      flash[:notice] = contest_entry.errors.full_messages.first
+      render 'contests/show'
+    end
   end
 
   private
