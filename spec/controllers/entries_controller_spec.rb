@@ -32,10 +32,10 @@ RSpec.describe EntriesController, type: :controller do
         }.not_to change(Entry, :count)
       end
 
-      it "redirects to the contest" do
+      it "renders the contest/show template" do
         post :create, contest_id: contest.id
 
-        expect(response).to redirect_to(contest)
+        expect(response).to render_template("contests/show")
       end
     end
   end

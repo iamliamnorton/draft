@@ -12,6 +12,6 @@ RSpec.describe "Joining contest", type: :feature do
 
     click_link 'Join'
 
-    expect(page).to have_content "Contest was successfully joined."
+    expect(page).to have_content "Contest was successfully entered."
   end
 end
