@@ -13,3 +13,8 @@ User.create!(
   password_confirmation: "asdfasdf",
   confirmed_at: Time.now
 )
+
+Sport.destroy_all
+Sport.create!(
+  name: "NBA"
+)
