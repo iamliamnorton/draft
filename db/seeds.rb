@@ -7,3 +7,9 @@ User.create!(
   password_confirmation: "asdfasdf",
   confirmed_at: Time.now
 )
+User.create!(
+  email: "foo@email.com",
+  password: "asdfasdf",
+  password_confirmation: "asdfasdf",
+  confirmed_at: Time.now
+)

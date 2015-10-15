@@ -1,0 +1,22 @@
+<%= render 'shared/errors', target: @contest %>
+
+<%= form_for(@contest) do |f| %>
+  <div class="form-group">
+    <%= f.label :entry %><br>
+    <%= f.number_field :entry, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :max_entries %><br>
+    <%= f.number_field :max_entries, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :cap %><br>
+    <%= f.number_field :cap,
+      disabled: true,
+      class: 'form-control' %>
+  </div>
+
+  <%= f.submit "Create contest", class: 'btn btn-primary' %>
+<% end %>
