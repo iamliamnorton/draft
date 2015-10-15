@@ -17,18 +17,20 @@ ActiveRecord::Schema.define(version: 20151014122117) do
   enable_extension "plpgsql"
 
   create_table "contests", force: :cascade do |t|
-    t.integer  "user_id",                 null: false
-    t.integer  "entry",                   null: false
-    t.integer  "cap",                     null: false
-    t.integer  "min_entries", default: 1, null: false
-    t.integer  "max_entries",             null: false
+    t.integer  "user_id",                     null: false
+    t.integer  "entry",                       null: false
+    t.integer  "cap",         default: 50000, null: false
+    t.integer  "min_entries", default: 1,     null: false
+    t.integer  "max_entries",                 null: false
     t.datetime "closed_at"
+    t.datetime "started_at"
     t.datetime "won_at"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "contests", ["closed_at"], name: "index_contests_on_closed_at", using: :btree
+  add_index "contests", ["started_at"], name: "index_contests_on_started_at", using: :btree
   add_index "contests", ["user_id"], name: "index_contests_on_user_id", using: :btree
   add_index "contests", ["won_at"], name: "index_contests_on_won_at", using: :btree
 

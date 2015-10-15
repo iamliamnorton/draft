@@ -19,8 +19,9 @@ RSpec.describe Contest, type: :model do
     it "returns open contests" do
       open_contest = create(:contest)
 
-      create(:contest_won)
-      create(:contest_closed)
+      create(:won_contest)
+      create(:started_contest)
+      create(:closed_contest)
 
       aggregate_failures do
         expect(Contest.open).to include(open_contest)

@@ -1,45 +1,47 @@
-<table class="table">
-  <tr>
-    <th>
-      Entry
-    </th>
-    <th>
-      Vs
-    </th>
-    <th>
-      Cap
-    </th>
-    <th>
-      Closed
-    </th>
-    <th>
-      Won
-    </th>
-    <th>
-    </th>
-  </tr>
-  <% contests.each do |contest| %>
+<div class="table-responsive">
+  <table class="table">
     <tr>
-      <td>
-        <%= link_to contest.user.email, contest %>
-      </td>
-      <td>
-        <%= contest.entry %>
-      </td>
-      <td>
-        <%= contest.cap %>
-      </td>
-      <td>
-        <%= contest.closed_at || "na" %>
-      </td>
-      <td>
-        <%= contest.won_at || "na" %>
-      </td>
-      <td>
-        <%= link_to "View",
-          contest_path(contest),
-          class: 'btn btn-primary' %>
-      </td>
+      <th>
+        Opponent
+      </th>
+      <th>
+        Entry
+      </th>
+      <th>
+        Prize
+      </th>
+      <th>
+        Entries
+      </th>
+      <th>
+        Cap
+      </th>
+      <th>
+      </th>
     </tr>
-  <% end %>
-</table>
+    <% contests.each do |contest| %>
+      <tr>
+        <td>
+          <%= link_to contest.user.email, contest %>
+        </td>
+        <td>
+          <%= contest.entry %>
+        </td>
+        <td>
+          <%= contest.prize  %>
+        </td>
+        <td>
+          <%= contest.entries.count %> / <%= contest.max_entries %>
+        </td>
+        <td>
+          <%= contest.cap %>
+        </td>
+        <td>
+          <%= link_to "View",
+            contest_path(contest),
+            class: 'btn btn-primary btn-xs' %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

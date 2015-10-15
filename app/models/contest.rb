@@ -1,6 +1,4 @@
 class Contest < ActiveRecord::Base
-  DEFAULT_CAP = 50_000
-
   belongs_to :user
 
   has_many :entries
@@ -42,15 +40,16 @@ class Contest < ActiveRecord::Base
   def self.open
     where(
       won_at: nil,
-      closed_at: nil
+      closed_at: nil,
+      started_at: nil,
     )
-  end
-
-  after_initialize do
-    self.cap ||= DEFAULT_CAP
   end
 
   def entries_remaining
     max_entries - entries.count
+  end
+
+  def prize
+    (2 * entry) * 0.9
   end
 end

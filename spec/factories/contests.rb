@@ -6,11 +6,15 @@ FactoryGirl.define do
     min_entries 2
     max_entries 100
 
-    factory :contest_closed do
+    factory :closed_contest do
       closed_at { 2.minutes.ago }
     end
 
-    factory :contest_won do
+    factory :started_contest do
+      started_at { 2.minutes.ago }
+    end
+
+    factory :won_contest do
       won_at { 2.minutes.ago }
     end
   end
