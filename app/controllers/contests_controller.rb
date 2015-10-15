@@ -25,7 +25,7 @@ class ContestsController < ApplicationController
   end
 
   def destroy
-    @contest.update!(cancelled_at: Time.now)
+    contest.update!(cancelled_at: Time.now)
 
     redirect_to lobby_url, notice: 'Contest was successfully cancelled.'
   end
@@ -33,7 +33,7 @@ class ContestsController < ApplicationController
   private
 
   def contest
-    @contest = Contest.find(params[:id])
+    @contest ||= Contest.find(params[:id])
   end
 
   def contest_params
