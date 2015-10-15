@@ -1,11 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "Contests", type: :request do
-  describe "GET contests#show" do
+RSpec.describe "Credit", type: :request do
+  describe "GET credit#show" do
     it "redirects guest user" do
-      contest = create(:contest)
-
-      get contest_path(contest)
+      get credit_path
 
       expect(response).to have_http_status(302)
 
@@ -17,23 +15,9 @@ RSpec.describe "Contests", type: :request do
     end
   end
 
-  describe "GET contests#new" do
+  describe "POST credit#create" do
     it "redirects guest user" do
-      get new_contest_path
-
-      expect(response).to have_http_status(302)
-
-      follow_redirect!
-
-      expect(response).to render_template('devise/sessions/new')
-      expect(response.body).to \
-        include("You need to sign in or sign up before continuing.")
-    end
-  end
-
-  describe "POST contests#create" do
-    it "redirects guest user" do
-      post contests_path
+      post credit_path
 
       expect(response).to have_http_status(302)
 
