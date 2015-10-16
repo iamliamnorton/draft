@@ -3,6 +3,9 @@ class Team < ActiveRecord::Base
 
   has_many :players
 
+  validates :sport_id,
+    presence: true
+
   validates :name,
     uniqueness: {scope: :sport_id},
     presence: true

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151016045204) do
+ActiveRecord::Schema.define(version: 20151016122521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,18 @@ ActiveRecord::Schema.define(version: 20151016045204) do
   add_index "entries", ["contest_id"], name: "index_entries_on_contest_id", using: :btree
   add_index "entries", ["user_id", "contest_id"], name: "index_entries_on_user_id_and_contest_id", unique: true, using: :btree
   add_index "entries", ["user_id"], name: "index_entries_on_user_id", using: :btree
+
+  create_table "games", force: :cascade do |t|
+    t.integer  "home_team_id", null: false
+    t.integer  "away_team_id", null: false
+    t.datetime "started_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "games", ["away_team_id"], name: "index_games_on_away_team_id", using: :btree
+  add_index "games", ["home_team_id"], name: "index_games_on_home_team_id", using: :btree
+  add_index "games", ["started_at"], name: "index_games_on_started_at", using: :btree
 
   create_table "players", force: :cascade do |t|
     t.integer  "team_id",    null: false
@@ -75,7 +87,7 @@ ActiveRecord::Schema.define(version: 20151016045204) do
   end
 
   create_table "teams", force: :cascade do |t|
-    t.integer  "sport_id"
+    t.integer  "sport_id",   null: false
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -117,6 +129,8 @@ ActiveRecord::Schema.define(version: 20151016045204) do
   add_foreign_key "contests", "users"
   add_foreign_key "entries", "contests"
   add_foreign_key "entries", "users"
+  add_foreign_key "games", "teams", column: "away_team_id"
+  add_foreign_key "games", "teams", column: "home_team_id"
   add_foreign_key "players", "teams"
   add_foreign_key "rounds", "sports"
   add_foreign_key "teams", "sports"
