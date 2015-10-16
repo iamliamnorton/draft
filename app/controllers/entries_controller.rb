@@ -10,8 +10,8 @@ class EntriesController < ApplicationController
     if contest_entry.valid? && contest_entry.save
       redirect_to contest, notice: 'Contest was successfully entered.'
     else
-      flash[:notice] = contest_entry.errors.full_messages.first
-      render 'contests/show'
+      notice = contest_entry.errors.full_messages.first
+      redirect_to contest, notice: notice
     end
   end
 

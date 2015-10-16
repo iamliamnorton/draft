@@ -85,7 +85,6 @@ ActiveRecord::Base.transaction do
     started_at: 1.day.from_now
   )
 
-  Game.destroy_all
   Game.create!(
     round: round_1,
     team: celtics,

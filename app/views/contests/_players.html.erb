@@ -1,0 +1,35 @@
+<div class="table-responsive">
+  <table class="table table-condensed">
+    <tr>
+      <th>
+        Name
+      </th>
+      <th>
+        Position
+      </th>
+      <th>
+        Salary
+      </th>
+      <th>
+      </th>
+    </tr>
+    <% players.each do |player| %>
+      <tr>
+        <td>
+          <%= player.name %>
+        </td>
+        <td>
+          <%= player.position %>
+        </td>
+        <td>
+          <%= player.salary  %>
+        </td>
+        <td>
+          <%= link_to "Add",
+            "#",
+            class: 'btn btn-success btn-xs' %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
