@@ -4,7 +4,11 @@ class ContestsController < ApplicationController
   before_action :rounds, only: [:new, :create]
 
   def show
-    @contest = Contest.find(params[:id])
+    @contest = Contest.includes(round: [:games]).find(params[:id])
+
+    games = @contest.round.games
+
+    @players = games.map(&:team).map(&:players).flatten
   end
 
   def new

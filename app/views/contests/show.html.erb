@@ -1,25 +1,68 @@
 <div class="col-md-12">
-  <p>
-    <strong>Entry:</strong>
-    <%= @contest.entry %>
-  </p>
+  <h3>
+    Head to head contest
+  </h3>
 
-  <p>
-    <strong>Cap:</strong>
-    <%= @contest.cap %>
-  </p>
+  <div class="container">
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p>
+            <strong>Entry:</strong>
+            <%= @contest.entry %>
+          </p>
 
-  <p>
-    <strong>Settled at:</strong>
-    <%= @contest.settled_at %>
-  </p>
+          <p>
+            <strong>Cap:</strong>
+            <%= @contest.cap %>
+          </p>
 
-  <p>
-    <%= link_to "Join",
-      contest_entries_path(@contest),
-      method: :post,
-      class: 'btn btn-primary' %>
-  </p>
+          <p>
+            <strong>Closed at:</strong>
+            <%= @contest.round.closed_at %>
+          </p>
 
-  <%= link_to "Back", lobby_url, class: 'btn btn-default' %>
+          <p>
+            <strong>Settled at:</strong>
+            <%= @contest.settled_at %>
+          </p>
+
+          <%= link_to "Join",
+            contest_entries_path(@contest),
+            method: :post,
+            class: 'btn btn-primary' %>
+
+          <%= link_to "Back", lobby_url, class: 'btn btn-default' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Players</h3>
+          </div>
+          <div class="panel-body">
+            <%= render partial: "contests/players",
+              locals: { players: @players } %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">My Roster</h3>
+          </div>
+          <div class="panel-body">
+            <p>
+              Add some players!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

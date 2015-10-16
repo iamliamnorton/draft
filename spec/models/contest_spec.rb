@@ -13,11 +13,18 @@ RSpec.describe Contest, type: :model do
 
     it { is_expected.to \
          validate_presence_of(:max_entries) }
+
+    it "factory is valid" do
+      contest = create(:contest)
+
+      expect(contest.valid?).to eq(true)
+    end
   end
 
   describe ".open" do
     it "returns contests in open rounds" do
-      past_contest = create(:contest, round: create(:closed_round))
+      create(:contest, round: create(:closed_round))
+      create(:contest, round: create(:completed_round))
 
       open_contest = create(:contest)
 

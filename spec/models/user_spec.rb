@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) { create(:user) }
-
   describe "#valid?" do
     it { is_expected.to \
          validate_presence_of(:credit) }
@@ -13,10 +11,16 @@ RSpec.describe User, type: :model do
     it { is_expected.to \
          validate_uniqueness_of(:email).
          case_insensitive }
+
+    it "factory is valid" do
+      user = create(:user)
+
+      expect(user.valid?).to eq(true)
+    end
   end
 
   describe "#guest?" do
-    subject { user.guest? }
+    subject { create(:user).guest? }
 
     it { is_expected.to eq(false) }
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151015143328) do
+ActiveRecord::Schema.define(version: 20151016151246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,24 +43,81 @@ ActiveRecord::Schema.define(version: 20151015143328) do
   add_index "entries", ["user_id", "contest_id"], name: "index_entries_on_user_id_and_contest_id", unique: true, using: :btree
   add_index "entries", ["user_id"], name: "index_entries_on_user_id", using: :btree
 
-  create_table "rounds", force: :cascade do |t|
+  create_table "games", force: :cascade do |t|
     t.integer  "sport_id",   null: false
-    t.string   "name",       null: false
-    t.datetime "opened_at"
-    t.datetime "closed_at"
+    t.integer  "round_id",   null: false
+    t.integer  "team_id",    null: false
+    t.datetime "started_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  add_index "games", ["round_id"], name: "index_games_on_round_id", using: :btree
+  add_index "games", ["sport_id", "team_id", "round_id"], name: "index_games_on_sport_id_and_team_id_and_round_id", unique: true, using: :btree
+  add_index "games", ["sport_id"], name: "index_games_on_sport_id", using: :btree
+  add_index "games", ["started_at"], name: "index_games_on_started_at", using: :btree
+  add_index "games", ["team_id"], name: "index_games_on_team_id", using: :btree
+
+  create_table "players", force: :cascade do |t|
+    t.integer  "team_id",    null: false
+    t.string   "name",       null: false
+    t.string   "position",   null: false
+    t.integer  "salary",     null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "players", ["position"], name: "index_players_on_position", using: :btree
+  add_index "players", ["team_id"], name: "index_players_on_team_id", using: :btree
+
+  create_table "roster_spots", force: :cascade do |t|
+    t.integer  "roster_id",  null: false
+    t.integer  "player_id",  null: false
+    t.integer  "cost",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "roster_spots", ["player_id"], name: "index_roster_spots_on_player_id", using: :btree
+  add_index "roster_spots", ["roster_id"], name: "index_roster_spots_on_roster_id", using: :btree
+
+  create_table "rosters", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "contest_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "rosters", ["contest_id"], name: "index_rosters_on_contest_id", using: :btree
+  add_index "rosters", ["user_id"], name: "index_rosters_on_user_id", using: :btree
+
+  create_table "rounds", force: :cascade do |t|
+    t.string   "name",         null: false
+    t.datetime "opened_at"
+    t.datetime "closed_at"
+    t.datetime "completed_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
   add_index "rounds", ["closed_at"], name: "index_rounds_on_closed_at", using: :btree
+  add_index "rounds", ["completed_at"], name: "index_rounds_on_completed_at", using: :btree
   add_index "rounds", ["opened_at"], name: "index_rounds_on_opened_at", using: :btree
-  add_index "rounds", ["sport_id"], name: "index_rounds_on_sport_id", using: :btree
 
   create_table "sports", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "teams", force: :cascade do |t|
+    t.integer  "sport_id",   null: false
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "teams", ["sport_id"], name: "index_teams_on_sport_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.boolean  "admin",                  default: false, null: false
@@ -95,5 +152,13 @@ ActiveRecord::Schema.define(version: 20151015143328) do
   add_foreign_key "contests", "users"
   add_foreign_key "entries", "contests"
   add_foreign_key "entries", "users"
-  add_foreign_key "rounds", "sports"
+  add_foreign_key "games", "rounds"
+  add_foreign_key "games", "sports"
+  add_foreign_key "games", "teams"
+  add_foreign_key "players", "teams"
+  add_foreign_key "roster_spots", "players"
+  add_foreign_key "roster_spots", "rosters"
+  add_foreign_key "rosters", "contests"
+  add_foreign_key "rosters", "users"
+  add_foreign_key "teams", "sports"
 end
