@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151016131057) do
+ActiveRecord::Schema.define(version: 20151016151246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,17 @@ ActiveRecord::Schema.define(version: 20151016131057) do
 
   add_index "players", ["position"], name: "index_players_on_position", using: :btree
   add_index "players", ["team_id"], name: "index_players_on_team_id", using: :btree
+
+  create_table "roster_spots", force: :cascade do |t|
+    t.integer  "roster_id",  null: false
+    t.integer  "player_id",  null: false
+    t.integer  "cost",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "roster_spots", ["player_id"], name: "index_roster_spots_on_player_id", using: :btree
+  add_index "roster_spots", ["roster_id"], name: "index_roster_spots_on_roster_id", using: :btree
 
   create_table "rosters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -145,6 +156,8 @@ ActiveRecord::Schema.define(version: 20151016131057) do
   add_foreign_key "games", "sports"
   add_foreign_key "games", "teams"
   add_foreign_key "players", "teams"
+  add_foreign_key "roster_spots", "players"
+  add_foreign_key "roster_spots", "rosters"
   add_foreign_key "rosters", "contests"
   add_foreign_key "rosters", "users"
   add_foreign_key "teams", "sports"

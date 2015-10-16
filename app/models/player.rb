@@ -1,6 +1,8 @@
 class Player < ActiveRecord::Base
   belongs_to :team
 
+  has_many :roster_spots
+
   validates :name,
     presence: true
 
