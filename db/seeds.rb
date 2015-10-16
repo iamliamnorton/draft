@@ -26,3 +26,13 @@ Round.create!(
   opened_at: 2.minutes.ago,
   closed_at: 2.days.from_now
 )
+
+Team.destroy_all
+Team.create!(
+  sport: nba,
+  name: "Chicago Bulls"
+)
+Team.create!(
+  sport: nba,
+  name: "Boston Celtics"
+)
