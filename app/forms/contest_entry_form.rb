@@ -40,7 +40,7 @@ class ContestEntryForm < Form
   end
 
   def user_credit_checks
-    if user.credit < contest.entry
+    if net_user_credit < 0
       errors.add(:base, "Insufficient credit")
     end
   end

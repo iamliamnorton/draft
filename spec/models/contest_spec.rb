@@ -16,26 +16,15 @@ RSpec.describe Contest, type: :model do
   end
 
   describe ".open" do
-    it "returns open contests" do
-      open_contest = create(:contest)
+    it "returns contests in open rounds" do
+      past_contest = create(:contest, round: create(:closed_round))
 
-      create(:won_contest)
-      create(:started_contest)
-      create(:closed_contest)
+      open_contest = create(:contest)
 
       aggregate_failures do
         expect(Contest.open).to include(open_contest)
         expect(Contest.open.count).to eq(1)
       end
-    end
-  end
-
-  describe "#entries_remaining" do
-    it "returns remaining entry count" do
-      contest = create(:contest, max_entries: 3)
-      create(:entry, contest: contest)
-
-      expect(contest.entries_remaining).to eq(2)
     end
   end
 end

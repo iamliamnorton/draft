@@ -1,11 +1,16 @@
 class Contest < ActiveRecord::Base
   belongs_to :user
 
+  belongs_to :round
+
   has_many :entries
 
   has_many :contestants,
     class_name: "User",
     through: :entries
+
+  validates :round,
+    presence: true
 
   validates :entry,
     presence: true,
@@ -38,15 +43,7 @@ class Contest < ActiveRecord::Base
     }
 
   def self.open
-    where(
-      won_at: nil,
-      closed_at: nil,
-      started_at: nil,
-    )
-  end
-
-  def entries_remaining
-    max_entries - entries.count
+    joins(:round).merge(Round.open)
   end
 
   def prize
