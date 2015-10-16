@@ -5,8 +5,10 @@ RSpec.describe Team, type: :model do
     it { is_expected.to \
          validate_presence_of(:name) }
 
-    it { is_expected.to \
-         validate_uniqueness_of(:name).
-         scoped_to(:sport_id) }
+    it "factory is valid" do
+      team = create(:team)
+
+      expect(team.valid?).to eq(true)
+    end
   end
 end

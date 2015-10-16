@@ -13,6 +13,12 @@ RSpec.describe Contest, type: :model do
 
     it { is_expected.to \
          validate_presence_of(:max_entries) }
+
+    it "factory is valid" do
+      contest = create(:contest)
+
+      expect(contest.valid?).to eq(true)
+    end
   end
 
   describe ".open" do

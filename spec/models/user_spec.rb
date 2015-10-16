@@ -13,6 +13,12 @@ RSpec.describe User, type: :model do
     it { is_expected.to \
          validate_uniqueness_of(:email).
          case_insensitive }
+
+    it "factory is valid" do
+      user = create(:user)
+
+      expect(user.valid?).to eq(true)
+    end
   end
 
   describe "#guest?" do

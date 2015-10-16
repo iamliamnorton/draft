@@ -10,5 +10,11 @@ RSpec.describe Player, type: :model do
 
     it { is_expected.to \
          validate_presence_of(:salary) }
+
+    it "factory is valid" do
+      player = create(:player)
+
+      expect(player.valid?).to eq(true)
+    end
   end
 end

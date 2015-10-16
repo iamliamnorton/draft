@@ -4,6 +4,12 @@ RSpec.describe Round, type: :model do
   describe "#valid?" do
     it { is_expected.to \
          validate_presence_of(:name) }
+
+    it "factory is valid" do
+      round = create(:round)
+
+      expect(round.valid?).to eq(true)
+    end
   end
 
   describe ".opened" do

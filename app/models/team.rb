@@ -7,6 +7,9 @@ class Team < ActiveRecord::Base
     presence: true
 
   validates :name,
-    uniqueness: {scope: :sport_id},
-    presence: true
+    presence: true,
+    uniqueness: {
+      scope: :sport_id,
+      case_sensitive: false
+    }
 end
