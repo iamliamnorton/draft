@@ -28,11 +28,50 @@ Round.create!(
 )
 
 Team.destroy_all
-Team.create!(
+bulls = Team.create!(
   sport: nba,
   name: "Chicago Bulls"
 )
-Team.create!(
+celtics = Team.create!(
   sport: nba,
   name: "Boston Celtics"
 )
+
+Player.destroy_all
+[
+  {name: "Michael Jordan", position: "G", salary: "7400"},
+  {name: "Derrick Rose", position: "G", salary: "5100"},
+  {name: "Jimmy Butler", position: "G", salary: "5300"},
+  {name: "Kirk Hinrich", position: "G", salary: "3800"},
+  {name: "Taj Gibson", position: "F", salary: "4300"},
+  {name: "Scotty Pippen", position: "F", salary: "6200"},
+  {name: "Pau Gasol", position: "F", salary: "6100"},
+  {name: "Luc Longley", position: "C", salary: "2600"},
+  {name: "Joakim Noah", position: "C", salary: "4500"},
+].each do |player|
+  Player.create!(
+    team: bulls,
+    position: player[:position],
+    salary: player[:salary],
+    name: player[:name]
+  )
+end
+
+[
+  {name: "Avery Bradley", position: "G", salary: "4900"},
+  {name: "Isaiah Thomas", position: "G", salary: "5400"},
+  {name: "Marcus Smart", position: "G", salary: "3600"},
+  {name: "Evan Turner", position: "G", salary: "4700"},
+  {name: "Larry Bird", position: "F", salary: "6900"},
+  {name: "David Lee", position: "F", salary: "4500"},
+  {name: "Jared Sullinger", position: "F", salary: "4700"},
+  {name: "Kelly Olynyk", position: "C", salary: "2600"},
+  {name: "Robert Parish", position: "C", salary: "4600"},
+].each do |player|
+  Player.create!(
+    team: celtics,
+    position: player[:position],
+    salary: player[:salary],
+    name: player[:name]
+  )
+end
