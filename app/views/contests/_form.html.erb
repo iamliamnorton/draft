@@ -18,5 +18,16 @@
       class: 'form-control' %>
   </div>
 
+  <div class="form-group">
+    <% @rounds.each do |round| %>
+      <div class="radio">
+        <label>
+          <%= f.radio_button :round_id, round.id %>
+          <%= round.name %>
+        </label>
+      </div>
+    <% end %>
+  </div>
+
   <%= f.submit "Create contest", class: 'btn btn-primary' %>
 <% end %>

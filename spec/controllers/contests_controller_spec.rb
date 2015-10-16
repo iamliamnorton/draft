@@ -2,15 +2,16 @@ require 'rails_helper'
 
 RSpec.describe ContestsController, type: :controller do
   let(:user) { create(:user) }
+  let(:round) { create(:round) }
 
   before { sign_in(user) }
 
   let(:valid_attributes) {
-    attributes_for(:contest)
+    attributes_for(:contest).merge(round_id: round.id)
   }
 
   let(:invalid_attributes) {
-    attributes_for(:contest).merge(entry: 1)
+    attributes_for(:contest).merge(round_id: nil)
   }
 
   describe "GET #show" do

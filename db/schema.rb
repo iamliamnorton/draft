@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151015095914) do
+ActiveRecord::Schema.define(version: 20151015143328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,17 +22,15 @@ ActiveRecord::Schema.define(version: 20151015095914) do
     t.integer  "cap",         default: 50000, null: false
     t.integer  "min_entries", default: 1,     null: false
     t.integer  "max_entries",                 null: false
-    t.datetime "closed_at"
-    t.datetime "started_at"
-    t.datetime "won_at"
+    t.datetime "settled_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.integer  "round_id",                    null: false
   end
 
-  add_index "contests", ["closed_at"], name: "index_contests_on_closed_at", using: :btree
-  add_index "contests", ["started_at"], name: "index_contests_on_started_at", using: :btree
+  add_index "contests", ["round_id"], name: "index_contests_on_round_id", using: :btree
+  add_index "contests", ["settled_at"], name: "index_contests_on_settled_at", using: :btree
   add_index "contests", ["user_id"], name: "index_contests_on_user_id", using: :btree
-  add_index "contests", ["won_at"], name: "index_contests_on_won_at", using: :btree
 
   create_table "entries", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -44,6 +42,19 @@ ActiveRecord::Schema.define(version: 20151015095914) do
   add_index "entries", ["contest_id"], name: "index_entries_on_contest_id", using: :btree
   add_index "entries", ["user_id", "contest_id"], name: "index_entries_on_user_id_and_contest_id", unique: true, using: :btree
   add_index "entries", ["user_id"], name: "index_entries_on_user_id", using: :btree
+
+  create_table "rounds", force: :cascade do |t|
+    t.integer  "sport_id",   null: false
+    t.string   "name",       null: false
+    t.datetime "opened_at"
+    t.datetime "closed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "rounds", ["closed_at"], name: "index_rounds_on_closed_at", using: :btree
+  add_index "rounds", ["opened_at"], name: "index_rounds_on_opened_at", using: :btree
+  add_index "rounds", ["sport_id"], name: "index_rounds_on_sport_id", using: :btree
 
   create_table "sports", force: :cascade do |t|
     t.string   "name",       null: false
@@ -80,7 +91,9 @@ ActiveRecord::Schema.define(version: 20151015095914) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
+  add_foreign_key "contests", "rounds"
   add_foreign_key "contests", "users"
   add_foreign_key "entries", "contests"
   add_foreign_key "entries", "users"
+  add_foreign_key "rounds", "sports"
 end

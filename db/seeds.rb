@@ -15,6 +15,14 @@ User.create!(
 )
 
 Sport.destroy_all
-Sport.create!(
+nba = Sport.create!(
   name: "NBA"
+)
+
+Round.destroy_all
+Round.create!(
+  sport: nba,
+  name: "Tuesday 14/2",
+  opened_at: 2.minutes.ago,
+  closed_at: 2.days.from_now
 )

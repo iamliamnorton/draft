@@ -8,15 +8,11 @@ class CreateContests < ActiveRecord::Migration
       t.integer :min_entries,       null: false,    default: 1
       t.integer :max_entries,       null: false
 
-      t.timestamp :closed_at
-      t.timestamp :started_at
-      t.timestamp :won_at
+      t.timestamp :settled_at
 
       t.timestamps null: false
     end
 
-    add_index :contests, :closed_at
-    add_index :contests, :started_at
-    add_index :contests, :won_at
+    add_index :contests, :settled_at
   end
 end

@@ -1,12 +1,16 @@
 class ContestsController < ApplicationController
   before_action :authenticate_user!
 
+  before_action :rounds, only: [:new, :create]
+
   def show
     @contest = Contest.find(params[:id])
   end
 
   def new
-    @contest = Contest.new
+    @contest = Contest.new(
+      round: rounds.first
+    )
   end
 
   def create
@@ -21,7 +25,11 @@ class ContestsController < ApplicationController
 
   private
 
+  def rounds
+    @rounds ||= Round.open
+  end
+
   def contest_params
-    params.require(:contest).permit(:entry, :max_entries)
+    params.require(:contest).permit(:entry, :round_id, :max_entries)
   end
 end
