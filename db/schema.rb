@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151016122521) do
+ActiveRecord::Schema.define(version: 20151016131057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,16 +44,19 @@ ActiveRecord::Schema.define(version: 20151016122521) do
   add_index "entries", ["user_id"], name: "index_entries_on_user_id", using: :btree
 
   create_table "games", force: :cascade do |t|
-    t.integer  "home_team_id", null: false
-    t.integer  "away_team_id", null: false
+    t.integer  "sport_id",   null: false
+    t.integer  "round_id",   null: false
+    t.integer  "team_id",    null: false
     t.datetime "started_at"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "games", ["away_team_id"], name: "index_games_on_away_team_id", using: :btree
-  add_index "games", ["home_team_id"], name: "index_games_on_home_team_id", using: :btree
+  add_index "games", ["round_id"], name: "index_games_on_round_id", using: :btree
+  add_index "games", ["sport_id", "team_id", "round_id"], name: "index_games_on_sport_id_and_team_id_and_round_id", unique: true, using: :btree
+  add_index "games", ["sport_id"], name: "index_games_on_sport_id", using: :btree
   add_index "games", ["started_at"], name: "index_games_on_started_at", using: :btree
+  add_index "games", ["team_id"], name: "index_games_on_team_id", using: :btree
 
   create_table "players", force: :cascade do |t|
     t.integer  "team_id",    null: false
@@ -68,17 +71,17 @@ ActiveRecord::Schema.define(version: 20151016122521) do
   add_index "players", ["team_id"], name: "index_players_on_team_id", using: :btree
 
   create_table "rounds", force: :cascade do |t|
-    t.integer  "sport_id",   null: false
-    t.string   "name",       null: false
+    t.string   "name",         null: false
     t.datetime "opened_at"
     t.datetime "closed_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "completed_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   add_index "rounds", ["closed_at"], name: "index_rounds_on_closed_at", using: :btree
+  add_index "rounds", ["completed_at"], name: "index_rounds_on_completed_at", using: :btree
   add_index "rounds", ["opened_at"], name: "index_rounds_on_opened_at", using: :btree
-  add_index "rounds", ["sport_id"], name: "index_rounds_on_sport_id", using: :btree
 
   create_table "sports", force: :cascade do |t|
     t.string   "name",       null: false
@@ -93,7 +96,6 @@ ActiveRecord::Schema.define(version: 20151016122521) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "teams", ["sport_id", "name"], name: "index_teams_on_sport_id_and_name", unique: true, using: :btree
   add_index "teams", ["sport_id"], name: "index_teams_on_sport_id", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -129,9 +131,9 @@ ActiveRecord::Schema.define(version: 20151016122521) do
   add_foreign_key "contests", "users"
   add_foreign_key "entries", "contests"
   add_foreign_key "entries", "users"
-  add_foreign_key "games", "teams", column: "away_team_id"
-  add_foreign_key "games", "teams", column: "home_team_id"
+  add_foreign_key "games", "rounds"
+  add_foreign_key "games", "sports"
+  add_foreign_key "games", "teams"
   add_foreign_key "players", "teams"
-  add_foreign_key "rounds", "sports"
   add_foreign_key "teams", "sports"
 end

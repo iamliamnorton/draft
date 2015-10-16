@@ -23,7 +23,8 @@ RSpec.describe Contest, type: :model do
 
   describe ".open" do
     it "returns contests in open rounds" do
-      past_contest = create(:contest, round: create(:closed_round))
+      create(:contest, round: create(:closed_round))
+      create(:contest, round: create(:completed_round))
 
       open_contest = create(:contest)
 

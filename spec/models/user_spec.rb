@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  let(:user) { create(:user) }
-
   describe "#valid?" do
     it { is_expected.to \
          validate_presence_of(:credit) }
@@ -22,7 +20,7 @@ RSpec.describe User, type: :model do
   end
 
   describe "#guest?" do
-    subject { user.guest? }
+    subject { create(:user).guest? }
 
     it { is_expected.to eq(false) }
   end

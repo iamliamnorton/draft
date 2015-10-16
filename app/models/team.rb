@@ -3,13 +3,8 @@ class Team < ActiveRecord::Base
 
   has_many :players
 
-  validates :sport_id,
-    presence: true
+  has_many :games
 
   validates :name,
-    presence: true,
-    uniqueness: {
-      scope: :sport_id,
-      case_sensitive: false
-    }
+    presence: true
 end

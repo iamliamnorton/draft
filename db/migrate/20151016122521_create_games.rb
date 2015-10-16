@@ -1,8 +1,9 @@
 class CreateGames < ActiveRecord::Migration
   def change
     create_table :games do |t|
-      t.references :home_team, null: false, index: true
-      t.references :away_team, null: false, index: true
+      t.references :sport, null: false, index: true, foreign_key: true
+      t.references :round, null: false, index: true, foreign_key: true
+      t.references :team, null: false, index: true, foreign_key: true
 
       t.timestamp :started_at
 
@@ -11,7 +12,6 @@ class CreateGames < ActiveRecord::Migration
 
     add_index :games, :started_at
 
-    add_foreign_key :games, :teams, column: :home_team_id
-    add_foreign_key :games, :teams, column: :away_team_id
+    add_index(:games, [:sport_id, :team_id, :round_id], unique: true)
   end
 end
