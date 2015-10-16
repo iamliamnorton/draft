@@ -13,7 +13,26 @@ class Form
     false
   end
 
+  def add_errors_from_record(record)
+    record.errors.each do |field, message|
+      errors.add(field, message)
+    end
+  end
+
   class << self
+    def validates_component(component_name, options={})
+      validator_name = :"_ensure_valid_#{component_name}"
+
+      define_method(validator_name) {
+        record = public_send(component_name)
+        if record.invalid?
+          add_errors_from_record(record)
+        end
+      }
+
+      validate(validator_name, options)
+    end
+
     def model_name
       begin
         super

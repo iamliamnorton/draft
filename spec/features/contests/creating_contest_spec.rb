@@ -15,7 +15,7 @@ RSpec.describe "Creating contest", type: :feature do
     expect(page).to have_content "Entry can't be blank"
 
     fill_in 'Entry', with: 1_00
-    fill_in 'Max entries', with: 100
+    fill_in 'Max entries', with: 10
     choose round.name
 
     click_button 'Create contest'

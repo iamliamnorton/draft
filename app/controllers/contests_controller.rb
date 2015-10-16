@@ -16,9 +16,16 @@ class ContestsController < ApplicationController
   def create
     @contest = current_user.contests.new(contest_params)
 
-    if @contest.save
+    contest_creation_form = ContestCreationForm.new(
+      contest: @contest,
+      user: current_user,
+      rounds: rounds
+    )
+
+    if contest_creation_form.valid? && contest_creation_form.save
       redirect_to @contest, notice: 'Contest was successfully created.'
     else
+      flash[:notice] = contest_creation_form.errors.full_messages.first
       render :new
     end
   end
