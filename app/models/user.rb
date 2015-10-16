@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 
   has_many :entries
 
+  has_many :rosters
+
   has_many :entered_contests,
     class_name: "Contest",
     source: :contest,

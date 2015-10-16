@@ -5,6 +5,8 @@ class Contest < ActiveRecord::Base
 
   has_many :entries
 
+  has_many :rosters
+
   has_many :contestants,
     class_name: "User",
     through: :entries

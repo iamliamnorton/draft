@@ -70,6 +70,16 @@ ActiveRecord::Schema.define(version: 20151016131057) do
   add_index "players", ["position"], name: "index_players_on_position", using: :btree
   add_index "players", ["team_id"], name: "index_players_on_team_id", using: :btree
 
+  create_table "rosters", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "contest_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "rosters", ["contest_id"], name: "index_rosters_on_contest_id", using: :btree
+  add_index "rosters", ["user_id"], name: "index_rosters_on_user_id", using: :btree
+
   create_table "rounds", force: :cascade do |t|
     t.string   "name",         null: false
     t.datetime "opened_at"
@@ -135,5 +145,7 @@ ActiveRecord::Schema.define(version: 20151016131057) do
   add_foreign_key "games", "sports"
   add_foreign_key "games", "teams"
   add_foreign_key "players", "teams"
+  add_foreign_key "rosters", "contests"
+  add_foreign_key "rosters", "users"
   add_foreign_key "teams", "sports"
 end
