@@ -28,3 +28,10 @@ run:
 push:
 	docker build --rm -t $(IMAGE) . && \
 	  docker push $(IMAGE)
+
+.PHONY: db
+db:
+	docker-compose run app rake db:drop && \
+	  docker-compose run app rake db:create && \
+	  docker-compose run app rake db:migrate && \
+	  docker-compose run app rake db:seed
