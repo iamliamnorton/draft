@@ -18,19 +18,31 @@ ActiveRecord::Schema.define(version: 20151016151246) do
 
   create_table "contests", force: :cascade do |t|
     t.integer  "user_id",                     null: false
+    t.integer  "round_id",                    null: false
     t.integer  "entry",                       null: false
-    t.integer  "cap",         default: 50000, null: false
+    t.integer  "salary_cap",  default: 50000, null: false
     t.integer  "min_entries", default: 1,     null: false
     t.integer  "max_entries",                 null: false
     t.datetime "settled_at"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
-    t.integer  "round_id",                    null: false
   end
 
   add_index "contests", ["round_id"], name: "index_contests_on_round_id", using: :btree
   add_index "contests", ["settled_at"], name: "index_contests_on_settled_at", using: :btree
   add_index "contests", ["user_id"], name: "index_contests_on_user_id", using: :btree
+
+  create_table "draft_picks", force: :cascade do |t|
+    t.integer  "roster_id",  null: false
+    t.integer  "player_id",  null: false
+    t.integer  "cost",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "draft_picks", ["player_id"], name: "index_draft_picks_on_player_id", using: :btree
+  add_index "draft_picks", ["roster_id", "player_id"], name: "index_draft_picks_on_roster_id_and_player_id", unique: true, using: :btree
+  add_index "draft_picks", ["roster_id"], name: "index_draft_picks_on_roster_id", using: :btree
 
   create_table "entries", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -70,17 +82,6 @@ ActiveRecord::Schema.define(version: 20151016151246) do
   add_index "players", ["position"], name: "index_players_on_position", using: :btree
   add_index "players", ["team_id"], name: "index_players_on_team_id", using: :btree
 
-  create_table "roster_spots", force: :cascade do |t|
-    t.integer  "roster_id",  null: false
-    t.integer  "player_id",  null: false
-    t.integer  "cost",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "roster_spots", ["player_id"], name: "index_roster_spots_on_player_id", using: :btree
-  add_index "roster_spots", ["roster_id"], name: "index_roster_spots_on_roster_id", using: :btree
-
   create_table "rosters", force: :cascade do |t|
     t.integer  "user_id",    null: false
     t.integer  "contest_id", null: false
@@ -89,6 +90,7 @@ ActiveRecord::Schema.define(version: 20151016151246) do
   end
 
   add_index "rosters", ["contest_id"], name: "index_rosters_on_contest_id", using: :btree
+  add_index "rosters", ["user_id", "contest_id"], name: "index_rosters_on_user_id_and_contest_id", unique: true, using: :btree
   add_index "rosters", ["user_id"], name: "index_rosters_on_user_id", using: :btree
 
   create_table "rounds", force: :cascade do |t|
@@ -150,14 +152,14 @@ ActiveRecord::Schema.define(version: 20151016151246) do
 
   add_foreign_key "contests", "rounds"
   add_foreign_key "contests", "users"
+  add_foreign_key "draft_picks", "players"
+  add_foreign_key "draft_picks", "rosters"
   add_foreign_key "entries", "contests"
   add_foreign_key "entries", "users"
   add_foreign_key "games", "rounds"
   add_foreign_key "games", "sports"
   add_foreign_key "games", "teams"
   add_foreign_key "players", "teams"
-  add_foreign_key "roster_spots", "players"
-  add_foreign_key "roster_spots", "rosters"
   add_foreign_key "rosters", "contests"
   add_foreign_key "rosters", "users"
   add_foreign_key "teams", "sports"

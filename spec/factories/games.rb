@@ -3,6 +3,6 @@ FactoryGirl.define do
     sport
     round
     team
-    started_at { 1.day.from_now }
+    started_at { 7.hours.from_now }
   end
 end

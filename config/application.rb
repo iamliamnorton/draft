@@ -20,7 +20,7 @@ module App
 
     config.autoload_paths += %W(#{config.root}/lib)
 
-    config.action_mailer.default_url_options = { # TODO
+    config.action_mailer.default_url_options = { # TODO move to env with devise
       host: 'localhost',
       port: 3000
     }

@@ -8,26 +8,26 @@
         Position
       </th>
       <th>
-        Salary
+        Cost
       </th>
       <th>
       </th>
     </tr>
-    <% players.each do |player| %>
+    <% draft_picks.each do |draft_pick| %>
       <tr>
         <td>
-          <%= player.name %>
+          <%= draft_pick.player.name %>
         </td>
         <td>
-          <%= player.position %>
+          <%= draft_pick.player.position %>
         </td>
         <td>
-          <%= player.salary  %>
+          <%= draft_pick.cost  %>
         </td>
         <td>
-          <%= link_to "Add",
-            contest_draft_picks_path(@contest, player_id: player.id),
-            method: :post,
+          <%= link_to "Remove",
+            contest_draft_pick_path(@contest, draft_pick),
+            method: :delete,
             class: 'btn btn-success btn-xs' %>
         </td>
       </tr>

@@ -17,4 +17,23 @@ RSpec.describe Player, type: :model do
       expect(player.valid?).to eq(true)
     end
   end
+
+  describe ".for_round" do
+    it "returns players available in round" do
+      create(:player)
+
+      team = create(:team)
+      round = create(:round)
+
+      contest = create(:contest, round: round)
+      game = create(:game, team: team, round: round)
+
+      available_player = create(:player, team: team)
+
+      aggregate_failures do
+        expect(Player.for_round(round)).to include(available_player)
+        expect(Player.for_round(round).count).to eq(1)
+      end
+    end
+  end
 end

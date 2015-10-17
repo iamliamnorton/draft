@@ -6,7 +6,7 @@ RSpec.describe Contest, type: :model do
          validate_presence_of(:entry) }
 
     it { is_expected.to \
-         validate_presence_of(:cap) }
+         validate_presence_of(:salary_cap) }
 
     it { is_expected.to \
          validate_presence_of(:min_entries) }

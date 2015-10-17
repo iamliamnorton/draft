@@ -1,6 +1,6 @@
-class CreateRosterSpots < ActiveRecord::Migration
+class CreateDraftPicks < ActiveRecord::Migration
   def change
-    create_table :roster_spots do |t|
+    create_table :draft_picks do |t|
       t.references :roster, null: false, index: true, foreign_key: true
       t.references :player, null: false, index: true, foreign_key: true
 
@@ -8,5 +8,7 @@ class CreateRosterSpots < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    add_index(:draft_picks, [:roster_id, :player_id], unique: true)
   end
 end

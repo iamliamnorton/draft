@@ -55,5 +55,11 @@ RSpec.describe CreateEntriesForm, type: :model do
 
       it { is_expected.to eq(false) }
     end
+
+    context "for a contest in a closed round" do
+      let(:contest) { create(:closed_contest) }
+
+      it { is_expected.to eq(false) }
+    end
   end
 end

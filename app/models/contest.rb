@@ -36,7 +36,7 @@ class Contest < ActiveRecord::Base
       greater_than_or_equal_to: 1
     }
 
-  validates :cap,
+  validates :salary_cap,
     presence: true,
     numericality: {
       only_integer: true,
@@ -47,6 +47,8 @@ class Contest < ActiveRecord::Base
   def self.open
     joins(:round).merge(Round.open)
   end
+
+  delegate :open?, to: :round, prefix: true
 
   def prize
     (2 * entry) * 0.9

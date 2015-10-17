@@ -30,7 +30,9 @@ class CreateEntriesForm < Form
   end
 
   def contest_availability_checks
-    if user.contests.include?(contest)
+    if !contest.round_open?
+      errors.add(:base, "Cannot enter contest in a closed round")
+    elsif user.contests.include?(contest)
       errors.add(:base, "Cannot enter own contest")
     elsif user.entered_contests.include?(contest)
       errors.add(:base, "Cannot enter contest more than once")

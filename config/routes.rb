@@ -16,5 +16,8 @@ Rails.application.routes.draw do
 
     resources :entries,
       only: [:create]
+
+    resources :draft_picks,
+      only: [:create, :destroy]
   end
 end

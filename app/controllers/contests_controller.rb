@@ -5,10 +5,13 @@ class ContestsController < ApplicationController
 
   def show
     @contest = Contest.includes(round: [:games]).find(params[:id])
+    @players = Player.for_round(@contest.round)
 
-    games = @contest.round.games
-
-    @players = games.map(&:team).map(&:players).flatten
+    @draft_picks = @contest.
+      rosters.
+      for_user(current_user).
+      first_or_initialize.
+      draft_picks
   end
 
   def new

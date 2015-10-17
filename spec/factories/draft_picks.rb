@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :roster_spot do
+  factory :draft_pick do
     roster
     player
     cost 1100

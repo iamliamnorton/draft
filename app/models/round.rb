@@ -21,4 +21,10 @@ class Round < ActiveRecord::Base
   def self.open
     opened.not_closed.not_completed
   end
+
+  def open?
+    opened_at < Time.now &&
+      closed_at > Time.now &&
+      completed_at > Time.now
+  end
 end

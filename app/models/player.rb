@@ -1,7 +1,7 @@
 class Player < ActiveRecord::Base
   belongs_to :team
 
-  has_many :roster_spots
+  has_many :draft_picks
 
   validates :name,
     presence: true
@@ -15,4 +15,8 @@ class Player < ActiveRecord::Base
       only_integer: true,
       greater_than_or_equal_to: 1
     }
+
+  def self.for_round(round)
+    where(team_id: round.games.pluck(:team_id))
+  end
 end

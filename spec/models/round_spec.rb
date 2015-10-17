@@ -43,4 +43,32 @@ RSpec.describe Round, type: :model do
       end
     end
   end
+
+  describe "#open?" do
+    subject { round.open? }
+
+    context "for open rounds" do
+      let(:round) { create(:round) }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context "for pending rounds" do
+      let(:round) { create(:pending_round) }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context "for closed rounds" do
+      let(:round) { create(:closed_round) }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context "for completed rounds" do
+      let(:round) { create(:completed_round) }
+
+      it { is_expected.to eq(false) }
+    end
+  end
 end
