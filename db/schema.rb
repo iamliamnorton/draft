@@ -71,10 +71,11 @@ ActiveRecord::Schema.define(version: 20151016151246) do
   add_index "games", ["team_id"], name: "index_games_on_team_id", using: :btree
 
   create_table "players", force: :cascade do |t|
-    t.integer  "team_id",    null: false
+    t.integer  "team_id"
     t.string   "name",       null: false
     t.string   "position",   null: false
     t.integer  "salary",     null: false
+    t.string   "source_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
