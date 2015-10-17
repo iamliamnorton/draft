@@ -1,4 +1,4 @@
-class ContestCreationForm < Form
+class CreateContestsForm < Form
   attribute :user
   attribute :rounds
   attribute :contest

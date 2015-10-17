@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe ContestEntryForm, type: :model do
+RSpec.describe CreateEntriesForm, type: :model do
   let(:user) { create(:user) }
   let(:contest) { create(:contest) }
 
-  let(:contest_entry_form) {
+  let(:create_entries_form) {
     described_class.new(
       user: user,
       contest: contest
@@ -13,20 +13,20 @@ RSpec.describe ContestEntryForm, type: :model do
 
   describe "#save" do
     it "creates an entry" do
-      expect { contest_entry_form.save }.to \
+      expect { create_entries_form.save }.to \
         change { Entry.count }.
         by +1
     end
 
     it "adjusts users credit" do
-      expect { contest_entry_form.save }.to \
+      expect { create_entries_form.save }.to \
         change { user.credit }.
         by -contest.entry
     end
   end
 
   describe "#valid?" do
-    subject { contest_entry_form.valid? }
+    subject { create_entries_form.valid? }
 
     context "with defaults" do
       it { is_expected.to eq(true) }
