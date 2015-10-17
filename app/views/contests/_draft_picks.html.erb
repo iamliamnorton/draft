@@ -8,6 +8,9 @@
         Position
       </th>
       <th>
+        FPPG
+      </th>
+      <th>
         Cost
       </th>
       <th>
@@ -20,6 +23,9 @@
         </td>
         <td>
           <%= draft_pick.player.position %>
+        </td>
+        <td>
+          <%= draft_pick.player.salary.to_f / 200 %>
         </td>
         <td>
           <%= draft_pick.cost  %>

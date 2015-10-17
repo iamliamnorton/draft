@@ -5,13 +5,16 @@ class ContestsController < ApplicationController
 
   def show
     @contest = Contest.includes(round: [:games]).find(params[:id])
-    @players = Player.for_round(@contest.round)
 
     @draft_picks = @contest.
       rosters.
       for_user(current_user).
       first_or_initialize.
       draft_picks
+
+    @players = Player.for_round(@contest.round).where.not(
+      id: @draft_picks.pluck(:player_id)
+    ).order(salary: :desc)
   end
 
   def new
