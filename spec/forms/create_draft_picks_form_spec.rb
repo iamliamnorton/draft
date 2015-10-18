@@ -64,5 +64,16 @@ RSpec.describe CreateDraftPicksForm, type: :model do
 
       it { is_expected.to eq(false) }
     end
+
+    context "when the max players for sport exceeded" do # TODO class per sport for rules
+      before {
+        roster = create(:roster, user: user, contest: contest)
+        10.times {
+          create(:draft_pick, roster: roster)
+        }
+      }
+
+      it { is_expected.to eq(false) }
+    end
   end
 end

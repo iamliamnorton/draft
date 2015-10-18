@@ -16,6 +16,7 @@ class CreateDraftPicksForm < Form
   validate :round_open
   validate :player_available
   validate :salary_cap
+  validate :roster_limits
 
   def save
     return if invalid?
@@ -76,5 +77,17 @@ class CreateDraftPicksForm < Form
 
   def player_salaries
     roster.draft_picks.sum(:cost) + player.salary
+  end
+
+  def roster_limits
+    sport = contest.round.games.first.sport
+
+    if roster_max_reached?(sport)
+      errors.add(:base, "Maximum players allowed for #{sport.name}")
+    end
+  end
+
+  def roster_max_reached?(sport)
+    sport.name == "NBA" && roster.draft_picks.count >= 10
   end
 end
