@@ -40,6 +40,16 @@
 
   <div class="container">
     <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= @contest.round.games.map(&:team).map(&:name) %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
       <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">

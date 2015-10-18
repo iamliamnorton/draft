@@ -15,7 +15,7 @@ class Round < ActiveRecord::Base
   end
 
   def self.not_completed
-    where('completed_at > ?', Time.now)
+    where('completed_at IS NULL OR completed_at > ?', Time.now)
   end
 
   def self.open
@@ -25,6 +25,6 @@ class Round < ActiveRecord::Base
   def open?
     opened_at < Time.now &&
       closed_at > Time.now &&
-      completed_at > Time.now
+      (completed_at.nil? || completed_at > Time.now)
   end
 end

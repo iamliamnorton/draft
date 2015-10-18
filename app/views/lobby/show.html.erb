@@ -1,9 +1,16 @@
 <div class="col-md-12">
   <h1>Lobby</h1>
 
-  <h3>
-    Welcome <%= current_user.email %>
-  </h3>
+  <div class="container">
+    <div class="row">
+      <h3>
+        Welcome <%= current_user.email %>
+      </h3>
+      <p>
+        There are <%= @rounds.count %> rounds open now
+      <p>
+    </div>
+  </div>
 
   <div class="container">
     <div class="row">

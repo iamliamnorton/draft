@@ -19,11 +19,16 @@
   </div>
 
   <div class="form-group">
+    <% if @rounds.none?  %>
+      <label>
+        No available rounds
+      </label>
+    <% end %>
     <% @rounds.each do |round| %>
       <div class="radio">
         <label>
           <%= f.radio_button :round_id, round.id %>
-          <%= round.name %>
+          <%= round.name %> (<%= round.games.count / 2 %> Games)
         </label>
       </div>
     <% end %>

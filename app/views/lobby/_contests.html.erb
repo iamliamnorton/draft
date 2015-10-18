@@ -5,6 +5,9 @@
         Opponent
       </th>
       <th>
+        Starts
+      </th>
+      <th>
         Entry
       </th>
       <th>
@@ -23,6 +26,9 @@
       <tr>
         <td>
           <%= link_to contest.user.email, contest %>
+        </td>
+        <td>
+          <%= distance_of_time_in_words(Time.now, contest.round.closed_at) %>
         </td>
         <td>
           <%= contest.entry %>
