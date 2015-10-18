@@ -3,6 +3,8 @@ class Player < ActiveRecord::Base
 
   has_many :draft_picks
 
+  has_many :stats
+
   validates :name,
     presence: true
 

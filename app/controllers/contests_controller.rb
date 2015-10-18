@@ -10,7 +10,8 @@ class ContestsController < ApplicationController
       rosters.
       for_user(current_user).
       first_or_initialize.
-      draft_picks
+      draft_picks.
+      order(cost: :desc)
 
     @players = Player.for_round(@contest.round).where.not(
       id: @draft_picks.pluck(:player_id)

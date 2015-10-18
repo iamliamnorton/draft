@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151016151246) do
+ActiveRecord::Schema.define(version: 20151018044409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,18 @@ ActiveRecord::Schema.define(version: 20151016151246) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "stats", force: :cascade do |t|
+    t.integer  "player_id",                null: false
+    t.integer  "game_id",                  null: false
+    t.integer  "points",       default: 0, null: false
+    t.datetime "completed_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "stats", ["game_id"], name: "index_stats_on_game_id", using: :btree
+  add_index "stats", ["player_id"], name: "index_stats_on_player_id", using: :btree
+
   create_table "teams", force: :cascade do |t|
     t.integer  "sport_id",   null: false
     t.string   "name",       null: false
@@ -163,5 +175,7 @@ ActiveRecord::Schema.define(version: 20151016151246) do
   add_foreign_key "players", "teams"
   add_foreign_key "rosters", "contests"
   add_foreign_key "rosters", "users"
+  add_foreign_key "stats", "games"
+  add_foreign_key "stats", "players"
   add_foreign_key "teams", "sports"
 end

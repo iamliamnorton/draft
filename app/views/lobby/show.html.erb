@@ -9,6 +9,12 @@
       <p>
         There are <%= @rounds.count %> rounds open now
       <p>
+      <p>
+        Next round closes in
+        <% if @rounds.minimum(:closed_at).present? %>
+          <%= distance_of_time_in_words(Time.now, @rounds.minimum(:closed_at)) %>
+        <% end %>
+      <p>
     </div>
   </div>
 
