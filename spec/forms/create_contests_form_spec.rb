@@ -2,13 +2,11 @@ require 'rails_helper'
 
 RSpec.describe CreateContestsForm, type: :model do
   let(:user) { create(:user) }
-  let(:rounds) { [contest.round] }
   let(:contest) { build(:contest) }
 
   let(:create_contests_form) {
     described_class.new(
       user: user,
-      rounds: rounds,
       contest: contest
     )
   }
@@ -46,8 +44,8 @@ RSpec.describe CreateContestsForm, type: :model do
       it { is_expected.to eq(false) }
     end
 
-    context "with an invalid round" do
-      let(:rounds) { [create(:round)] }
+    context "for a contest in a closed round" do
+      let(:contest) { create(:closed_contest) }
 
       it { is_expected.to eq(false) }
     end

@@ -28,8 +28,7 @@ class ContestsController < ApplicationController
 
     create_contests_form = CreateContestsForm.new(
       contest: @contest,
-      user: current_user,
-      rounds: rounds
+      user: current_user
     )
 
     if create_contests_form.save

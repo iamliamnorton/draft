@@ -6,18 +6,15 @@ class CreateContestsForm < Form
   validates :user,
     presence: true
 
-  validates :rounds,
-    presence: true
-
   validates :contest,
     presence: true
 
   validates_component :contest
 
-  validate :round_availability_checks,
+  validate :round_open,
     if: Proc.new { |form| form.contest.valid? }
 
-  validate :user_credit_checks,
+  validate :user_credit,
     if: Proc.new { |form| form.contest.valid? }
 
   def save
@@ -34,19 +31,23 @@ class CreateContestsForm < Form
 
   private
 
-  def net_user_credit
-    user.credit - (contest.entry * contest.max_entries)
-  end
-
-  def round_availability_checks
-    unless rounds.include?(contest.round)
+  def round_open
+    unless open_rounds.include?(contest.round)
       errors.add(:base, "Round not available")
     end
   end
 
-  def user_credit_checks
+  def open_rounds
+    Round.open
+  end
+
+  def user_credit
     if net_user_credit < 0
       errors.add(:base, "Insufficient credit")
     end
+  end
+
+  def net_user_credit
+    user.credit - (contest.entry * contest.max_entries)
   end
 end
