@@ -6,25 +6,22 @@ class Round < ActiveRecord::Base
   validates :name,
     presence: true
 
-  def self.opened
-    where('opened_at < ?', Time.now)
-  end
-
-  def self.not_closed
-    where('closed_at > ?', Time.now)
-  end
-
-  def self.not_completed
-    where('completed_at IS NULL OR completed_at > ?', Time.now)
+  def self.incomplete
+    where(completed_at: nil)
   end
 
   def self.open
-    opened.not_closed.not_completed
+    incomplete.
+      where('opened_at < ?', Time.now).
+      where('closed_at > ?', Time.now)
+  end
+
+  def self.closed
+    incomplete.
+      where('closed_at < ?', Time.now)
   end
 
   def open?
-    opened_at < Time.now &&
-      closed_at > Time.now &&
-      (completed_at.nil? || completed_at > Time.now)
+    opened_at < Time.now && closed_at > Time.now && completed_at.nil?
   end
 end
