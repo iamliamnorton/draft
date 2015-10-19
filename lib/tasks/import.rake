@@ -1,8 +1,112 @@
 require 'csv'
 
 namespace :import do
+  desc "import NBA teams"
+  task pro_ball_teams: :environment do
+    nba = Sport.where(name: "NBA").first_or_create!
+
+    puts "#{Team.count} Teams initially"
+
+    team_data = Draft::ProBall.scrape_teams
+
+    team_data.each do |data|
+      team = Team.where(
+        source_id: data["team_id"],
+        name: data["team_name"],
+        sport: nba
+      ).first_or_create!
+
+      team.city = data["city"]
+      team.abbreviation = data["abbreviation"]
+
+      team.save!
+    end
+
+    puts "#{Team.count} Teams"
+    puts "teams #{team_data.count}"
+  end
+
+  desc "import NBA games"
+  task pro_ball_games: :environment do
+    nba = Sport.where(name: "NBA").first_or_create!
+
+    puts "#{Game.count} Games initially"
+
+    game_data = Draft::ProBall.scrape_games(season: 2014)
+
+    rounds = []
+
+    game_data.each do |data|
+      data = data[1]
+
+      game_started = Time.at(data['date']) + 6.months # TODO
+
+      round = Round.where(
+        name: "NBA #{game_started.day}/#{game_started.month}"
+      ).first_or_create!
+
+      round.opened_at = [ game_started - 3.days, round.opened_at ].compact.min - 3.days
+      round.closed_at = [ game_started, round.closed_at ].compact.min
+      round.save!
+
+      rounds << round
+      rounds = rounds.uniq
+
+      home_team = Team.find_by_source_id!(data['home_id'])
+      away_team = Team.find_by_source_id!(data['away_id'])
+
+      [home_team, away_team].each do |team|
+        game = Game.where(
+          team: team,
+          sport: nba,
+          round: round
+        ).first_or_create!
+
+        game.source_id = data["game_id"]
+        game.started_at = game_started
+        game.save!
+      end
+    end
+
+    puts "Games processed #{game_data.count}"
+    puts "#{rounds.count} Rounds processed (total: #{Round.count})"
+    puts "#{Game.count} total Games"
+  end
+
+  desc "import NBA players"
+  task pro_ball_players: :environment do
+    nba = Sport.where(name: "NBA").first_or_create!
+
+    puts "#{Player.count} Players"
+
+    player_data = Draft::ProBall.scrape_players
+
+    puts "TODO Player - team association broken!"
+    player_data.each do |data|
+      player = Player.
+        where(source_id: data["player_id"], name: data["player_name"]).
+        first_or_create!
+
+      rand_id = Team.pluck(:id).sample
+      player.team = Team.find(rand_id)
+
+      # TODO team assoication broken for ProBall
+      # player.team = Draft::ProBall::TEAM_MAPPER.fetch(data["team_id"])
+      # player.team = Team.find_by_source!(data["team_id"])
+
+      player.position = data["position"]
+
+      player.save!
+    end
+
+    puts "#{Player.count} Players"
+    puts "players #{player_data.count}"
+  end
+
+  ### Csv source
+
   desc "import NBA schedule"
-  task nba_games: :environment do
+  task csv_games: :environment do
     nba = Sport.where(name: "NBA").first_or_create!
 
     csv_text = File.read('data/nba/schedule_2014_15.csv')
@@ -58,7 +162,7 @@ namespace :import do
   end
 
   desc "import NBA player and team data"
-  task nba_players: :environment do
+  task csv_players: :environment do
     nba = Sport.where(name: "NBA").first_or_create!
 
     team_mapper = {
@@ -103,7 +207,10 @@ namespace :import do
     puts "Importing players..."
 
     csv.each do |row|
-      player = Player.where(source_id: row['Rk'], name: row['Player']).first_or_initialize
+      player = Player.
+        where(source_id: row['Rk'], name: row['Player']).
+        first_or_initialize
+
       player.position = row['Pos']
 
       # TODO extract fantasy point calc

@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 20151018044409) do
     t.integer  "sport_id",   null: false
     t.integer  "round_id",   null: false
     t.integer  "team_id",    null: false
+    t.integer  "source_id"
     t.datetime "started_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -72,15 +73,16 @@ ActiveRecord::Schema.define(version: 20151018044409) do
 
   create_table "players", force: :cascade do |t|
     t.integer  "team_id"
-    t.string   "name",       null: false
-    t.string   "position",   null: false
-    t.integer  "salary",     null: false
-    t.string   "source_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "source_id"
+    t.string   "name",                    null: false
+    t.string   "position",   default: "", null: false
+    t.integer  "salary",     default: 0,  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   add_index "players", ["position"], name: "index_players_on_position", using: :btree
+  add_index "players", ["source_id"], name: "index_players_on_source_id", using: :btree
   add_index "players", ["team_id"], name: "index_players_on_team_id", using: :btree
 
   create_table "rosters", force: :cascade do |t|
@@ -126,12 +128,16 @@ ActiveRecord::Schema.define(version: 20151018044409) do
   add_index "stats", ["player_id"], name: "index_stats_on_player_id", using: :btree
 
   create_table "teams", force: :cascade do |t|
-    t.integer  "sport_id",   null: false
-    t.string   "name",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "sport_id",                  null: false
+    t.integer  "source_id"
+    t.string   "name",                      null: false
+    t.string   "city",         default: "", null: false
+    t.string   "abbreviation", default: "", null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
+  add_index "teams", ["source_id"], name: "index_teams_on_source_id", using: :btree
   add_index "teams", ["sport_id"], name: "index_teams_on_sport_id", using: :btree
 
   create_table "users", force: :cascade do |t|

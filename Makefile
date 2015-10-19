@@ -34,6 +34,4 @@ db:
 	docker-compose run app rake db:drop && \
 	  docker-compose run app rake db:create && \
 	  docker-compose run app rake db:migrate && \
-	  docker-compose run app rake db:seed && \
-	  docker-compose run app rake import:nba_games && \
-	  docker-compose run app rake import:nba_players
+	  docker-compose run app rake db:seed

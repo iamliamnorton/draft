@@ -5,6 +5,8 @@ class CreateGames < ActiveRecord::Migration
       t.references :round, null: false, index: true, foreign_key: true
       t.references :team, null: false, index: true, foreign_key: true
 
+      t.integer :source_id
+
       t.timestamp :started_at
 
       t.timestamps null: false

@@ -8,15 +8,16 @@ class Player < ActiveRecord::Base
   validates :name,
     presence: true
 
-  validates :position,
-    presence: true
-
   validates :salary,
     presence: true,
     numericality: {
       only_integer: true,
-      greater_than_or_equal_to: 1
+      greater_than_or_equal_to: 0
     }
+
+  def self.by_source(id)
+    where(source_id: id).last
+  end
 
   def self.for_round(round)
     where(team_id: round.games.pluck(:team_id))
