@@ -6,7 +6,7 @@ RSpec.describe CreateDraftPicksForm, type: :model do
   let(:contest) { create(:contest) }
 
   let!(:team) { create(:team) }
-  let!(:game) { create(:game, team: team, round: contest.round) }
+  let!(:game) { create(:game, home_team: team, round: contest.round) }
 
   let(:create_draft_picks_form) {
     described_class.new(
@@ -65,7 +65,7 @@ RSpec.describe CreateDraftPicksForm, type: :model do
       it { is_expected.to eq(false) }
     end
 
-    context "when the max players for sport exceeded" do # TODO class per sport for rules
+    context "when the max players for season exceeded" do # TODO class per season for rules
       before {
         roster = create(:roster, user: user, contest: contest)
         10.times {

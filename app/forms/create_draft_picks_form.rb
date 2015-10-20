@@ -80,14 +80,12 @@ class CreateDraftPicksForm < Form
   end
 
   def roster_limits
-    sport = contest.round.games.first.sport
-
-    if roster_max_reached?(sport)
-      errors.add(:base, "Maximum players allowed for #{sport.name}")
+    if roster_max_reached?
+      errors.add(:base, "Roster is full")
     end
   end
 
-  def roster_max_reached?(sport)
-    sport.name == "NBA" && roster.draft_picks.count >= 10
+  def roster_max_reached?
+    roster.draft_picks.count >= contest.round.games.first.season.max_draft_picks
   end
 end

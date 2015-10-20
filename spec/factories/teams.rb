@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :team do
-    sport
+    season
     sequence(:name) { |n| "Team #{n}" }
   end
 end

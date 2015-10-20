@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Creating draft pick", type: :feature do
   let!(:contest) { create(:contest) }
   let!(:game) { create(:game, round: contest.round) }
-  let!(:player) { create(:player, team: game.team) }
+  let!(:player) { create(:player, team: game.home_team) }
 
   it "user can add and remove players" do
     user = contest.user

@@ -12,6 +12,20 @@ RSpec.describe Round, type: :model do
     end
   end
 
+  describe ".incomplete" do
+    it "returns incomplete rounds" do
+      completed_round = create(:completed_round)
+
+      create(:round)
+      create(:closed_round)
+
+      aggregate_failures do
+        expect(Round.incomplete).not_to include(completed_round)
+        expect(Round.incomplete.count).to eq(2)
+      end
+    end
+  end
+
   describe ".open" do
     it "returns open rounds" do
       open_round = create(:round)
@@ -59,6 +73,50 @@ RSpec.describe Round, type: :model do
       let(:round) { create(:completed_round) }
 
       it { is_expected.to eq(false) }
+    end
+  end
+
+  describe "#running?" do
+    subject { round.running? }
+
+    context "for open rounds" do
+      let(:round) { create(:round) }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context "for closed rounds" do
+      let(:round) { create(:closed_round) }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context "for completed rounds" do
+      let(:round) { create(:completed_round) }
+
+      it { is_expected.to eq(false) }
+    end
+  end
+
+  describe "#completed?" do
+    subject { round.completed? }
+
+    context "for open rounds" do
+      let(:round) { create(:round) }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context "for closed rounds" do
+      let(:round) { create(:closed_round) }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context "for completed rounds" do
+      let(:round) { create(:completed_round) }
+
+      it { is_expected.to eq(true) }
     end
   end
 end

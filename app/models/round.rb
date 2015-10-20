@@ -21,7 +21,15 @@ class Round < ActiveRecord::Base
       where('closed_at < ?', Time.now)
   end
 
+  def running?
+    !open? && !completed?
+  end
+
   def open?
-    opened_at < Time.now && closed_at > Time.now && completed_at.nil?
+    opened_at < Time.now && closed_at > Time.now && !completed?
+  end
+
+  def completed?
+    !!completed_at
   end
 end

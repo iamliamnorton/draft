@@ -42,7 +42,7 @@
     <div class="row">
       <div class="panel panel-default">
         <div class="panel-body">
-          <%= @contest.round.games.map(&:team).map(&:name) %>
+	  <%= @contest.round.games.map {|g| [g.home_team, g.away_team]}.flatten.map(&:name) %>
         </div>
       </div>
     </div>

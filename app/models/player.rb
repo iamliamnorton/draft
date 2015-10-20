@@ -20,6 +20,8 @@ class Player < ActiveRecord::Base
   end
 
   def self.for_round(round)
-    where(team_id: round.games.pluck(:team_id))
+    team_ids = round.games.pluck(:home_team_id, :away_team_id).flatten
+
+    where(team_id: team_ids)
   end
 end

@@ -1,9 +1,9 @@
 require 'csv'
 
-namespace :import do
+namespace :import_nba do
   desc "import NBA teams"
-  task pro_ball_teams: :environment do
-    nba = Sport.where(name: "NBA").first_or_create!
+  task proball_teams: :environment do
+    nba = Season.where(name: "NBA", year: "2015", max_draft_picks: 10).first_or_create!
 
     puts "#{Team.count} Teams initially"
 
@@ -13,7 +13,7 @@ namespace :import do
       team = Team.where(
         source_id: data["team_id"],
         name: data["team_name"],
-        sport: nba
+        season: nba
       ).first_or_create!
 
       team.city = data["city"]
@@ -27,8 +27,8 @@ namespace :import do
   end
 
   desc "import NBA games"
-  task pro_ball_games: :environment do
-    nba = Sport.where(name: "NBA").first_or_create!
+  task proball_games: :environment do
+    nba = Season.where(name: "NBA", year: "2015", max_draft_picks: 10).first_or_create!
 
     puts "#{Game.count} Games initially"
 
@@ -50,23 +50,26 @@ namespace :import do
       round.save!
 
       rounds << round
-      rounds = rounds.uniq
+      rounds.uniq!
 
       home_team = Team.find_by_source_id!(data['home_id'])
       away_team = Team.find_by_source_id!(data['away_id'])
 
-      [home_team, away_team].each do |team|
-        game = Game.where(
-          team: team,
-          sport: nba,
-          round: round
-        ).first_or_create!
+      game = Game.where(
+        home_team: home_team,
+        away_team: away_team,
+        season: nba,
+        round: round
+      ).first_or_create!
 
-        game.source_id = data["game_id"]
-        game.started_at = game_started
-        game.save!
-      end
+      game.source_id = data["game_id"]
+      game.started_at = game_started
+      game.save!
     end
+
+    ended_games = Game.incomplete.where('started_at < ?', Time.now)
+    puts "closing #{ended_games.count} games"
+    ended_games.update_all(completed_at: Time.now)
 
     puts "Games processed #{game_data.count}"
     puts "#{rounds.count} Rounds processed (total: #{Round.count})"
@@ -74,14 +77,13 @@ namespace :import do
   end
 
   desc "import NBA players"
-  task pro_ball_players: :environment do
-    nba = Sport.where(name: "NBA").first_or_create!
+  task proball_players: :environment do
+    nba = Season.where(name: "NBA", year: "2015", max_draft_picks: 10).first_or_create!
 
     puts "#{Player.count} Players"
 
     player_data = Draft::ProBall.scrape_players
 
-    puts "TODO Player - team association broken!"
     player_data.each do |data|
       player = Player.
         where(source_id: data["player_id"], name: data["player_name"]).
@@ -94,7 +96,11 @@ namespace :import do
       # player.team = Draft::ProBall::TEAM_MAPPER.fetch(data["team_id"])
       # player.team = Team.find_by_source!(data["team_id"])
 
+      # TODO player position mapping
       player.position = data["position"]
+
+      # TODO player salary calculations
+      player.salary = rand(1000..10000)
 
       player.save!
     end
@@ -107,7 +113,7 @@ namespace :import do
 
   desc "import NBA schedule"
   task csv_games: :environment do
-    nba = Sport.where(name: "NBA").first_or_create!
+    nba = Season.where(name: "NBA", year: "2015", max_draft_picks: 10).first_or_create!
 
     csv_text = File.read('data/nba/schedule_2014_15.csv')
     csv = CSV.parse(csv_text, :headers => true)
@@ -137,9 +143,9 @@ namespace :import do
       away_team = row['Visitor/Neutral']
 
       [home_team, away_team].each do |team_name|
-        team = Team.where(name: team_name, sport: nba).first_or_create!
+        team = Team.where(name: team_name, season: nba).first_or_create!
         game = Game.where(
-          sport: nba,
+          season: nba,
           round: round,
           team: team,
           started_at: (game_start_at + TIME_TRAVEL)
@@ -163,7 +169,7 @@ namespace :import do
 
   desc "import NBA player and team data"
   task csv_players: :environment do
-    nba = Sport.where(name: "NBA").first_or_create!
+    nba = Season.where(name: "NBA", year: "2015", max_draft_picks: 10).first_or_create!
 
     team_mapper = {
       "ATL" => "Atlanta Hawks",
@@ -229,7 +235,7 @@ namespace :import do
 
         player.salary = [fantasy_points, 100].max
       else
-        team = Team.where(name: team_mapper.fetch(row['Tm']), sport: nba).first_or_create!
+        team = Team.where(name: team_mapper.fetch(row['Tm']), season: nba).first_or_create!
         player.team = team
 
         unless traded_players.include?(row['Rk'])

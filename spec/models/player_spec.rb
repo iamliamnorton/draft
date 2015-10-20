@@ -23,7 +23,7 @@ RSpec.describe Player, type: :model do
       round = create(:round)
 
       contest = create(:contest, round: round)
-      game = create(:game, team: team, round: round)
+      game = create(:game, home_team: team, round: round)
 
       available_player = create(:player, team: team)
 

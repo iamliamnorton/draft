@@ -6,7 +6,7 @@ RSpec.describe DraftPicksController, type: :controller do
   let(:contest) { create(:contest) }
 
   let!(:team) { create(:team) }
-  let!(:game) { create(:game, team: team, round: contest.round) }
+  let!(:game) { create(:game, home_team: team, round: contest.round) }
 
   before { sign_in(user) }
 
