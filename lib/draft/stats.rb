@@ -1,9 +1,5 @@
 module Draft
   class Stats
-    def self.for(game:, player:)
-      new(game: game, player: player)
-    end
-
     def initialize(game:, player:)
       @game = game
       @player = player

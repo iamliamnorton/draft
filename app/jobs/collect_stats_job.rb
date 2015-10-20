@@ -9,7 +9,7 @@ class CollectStatsJob < ActiveJob::Base
       ].flatten
 
       players.each do |player|
-	Draft::Stats.for(game: game, player: player).collect!
+	Draft::Stats.new(game: game, player: player).collect!
       end
     end
   end

@@ -34,4 +34,36 @@ RSpec.describe Contest, type: :model do
       end
     end
   end
+
+  describe "#settled?" do
+    subject { contest.settled? }
+
+    context "for settled contests" do
+      let(:contest) { create(:settled_contest) }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context "for unsettled contests" do
+      let(:contest) { create(:contest) }
+
+      it { is_expected.to eq(false) }
+    end
+  end
+
+  describe "#prize?" do
+    subject { contest.prize }
+
+    context "it takes a cut (10%)" do
+      let(:contest) { create(:contest, entry: 100) }
+
+      it { is_expected.to eq(180) }
+    end
+
+    context "rounds down to a whole number (Integer)" do
+      let(:contest) { create(:contest, entry: 101) }
+
+      it { is_expected.to eq(181) }
+    end
+  end
 end

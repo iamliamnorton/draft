@@ -9,7 +9,7 @@ RSpec.describe CollectStatsJob, type: :job do
     stats_collector = instance_double(Draft::Stats)
 
     allow(Draft::Stats).
-      to receive(:for).
+      to receive(:new).
       with(game: game, player: player).
       and_return(stats_collector)
 

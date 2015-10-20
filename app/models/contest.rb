@@ -1,7 +1,12 @@
 class Contest < ActiveRecord::Base
+  WIN_SHARE = 0.9
+
   belongs_to :user
 
   belongs_to :round
+
+  has_many :games,
+    through: :round
 
   has_many :entries
 
@@ -9,7 +14,8 @@ class Contest < ActiveRecord::Base
 
   has_many :contestants,
     class_name: "User",
-    through: :entries
+    through: :entries,
+    source: :user
 
   validates :round,
     presence: true
@@ -51,6 +57,10 @@ class Contest < ActiveRecord::Base
   delegate :open?, to: :round, prefix: true
 
   def prize
-    (2 * entry) * 0.9
+    Integer 2 * entry * WIN_SHARE
+  end
+
+  def settled?
+    !!settled_at
   end
 end
