@@ -23,4 +23,8 @@ class Game < ActiveRecord::Base
     incomplete.
       where('started_at < ?', Time.now)
   end
+
+  def self.include_players
+    includes(home_team: [:players], away_team: [:players])
+  end
 end

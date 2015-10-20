@@ -5,6 +5,9 @@
         Name
       </th>
       <th>
+        Points
+      </th>
+      <th>
         Position
       </th>
       <th>
@@ -20,6 +23,9 @@
       <tr>
         <td>
           <%= player.name %>
+        </td>
+        <td>
+          <%= player.stats.where(game: @contest.round.games).first.try(:points) %>
         </td>
         <td>
           <%= player.position %>

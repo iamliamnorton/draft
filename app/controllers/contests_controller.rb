@@ -15,7 +15,7 @@ class ContestsController < ApplicationController
 
     @players = Player.for_round(@contest.round).where.not(
       id: @draft_picks.pluck(:player_id)
-    ).order(salary: :desc)
+    ).order(position: :desc)
   end
 
   def new
