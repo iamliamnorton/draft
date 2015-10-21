@@ -7,7 +7,7 @@ namespace :import_nba do
 
     puts "#{Team.count} Teams initially"
 
-    team_data = Draft::ProBall.scrape_teams
+    team_data = ProBall::Client.scrape_teams
 
     team_data.each do |data|
       team = Team.where(
@@ -32,7 +32,7 @@ namespace :import_nba do
 
     puts "#{Game.count} Games initially"
 
-    game_data = Draft::ProBall.scrape_games(season: 2014)
+    game_data = ProBall::Client.scrape_games(season: 2014)
 
     rounds = []
 
@@ -82,7 +82,7 @@ namespace :import_nba do
 
     puts "#{Player.count} Players"
 
-    player_data = Draft::ProBall.scrape_players
+    player_data = ProBall::Client.scrape_players
 
     player_data.each do |data|
       player = Player.
@@ -93,7 +93,7 @@ namespace :import_nba do
       player.team = Team.find(rand_id)
 
       # TODO team assoication broken for ProBall
-      # player.team = Draft::ProBall::TEAM_MAPPER.fetch(data["team_id"])
+      # player.team = ProBall::Client::TEAM_MAPPER.fetch(data["team_id"])
       # player.team = Team.find_by_source!(data["team_id"])
 
       # TODO player position mapping

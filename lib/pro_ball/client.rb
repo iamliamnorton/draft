@@ -1,8 +1,8 @@
 require 'net/http'
 require 'json'
 
-module Draft
-  class ProBall
+module ProBall
+  class Client
     HOST = 'https://probasketballapi.com'
     KEY = "hObUVEQ98yxR1wTAaDPXdJ7utelkq0cZ"
 
