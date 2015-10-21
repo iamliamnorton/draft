@@ -4,11 +4,6 @@ class Form
   include ActiveModel::Validations
   extend  ActiveModel::Naming
 
-  def initialize(attributes = {})
-    super
-    attributes.each { |n, v| send("#{n}=", v) if respond_to?("#{n}=") }
-  end
-
   def persisted?
     false
   end
