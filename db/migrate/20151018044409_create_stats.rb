@@ -7,8 +7,6 @@ class CreateStats < ActiveRecord::Migration
       # multiples of tens for scoring, no decimals
       t.integer :points, null: false, default: 0
 
-      t.timestamp :completed_at
-
       t.timestamps null: false
     end
   end

@@ -122,12 +122,11 @@ ActiveRecord::Schema.define(version: 20151018044409) do
   end
 
   create_table "stats", force: :cascade do |t|
-    t.integer  "player_id",                null: false
-    t.integer  "game_id",                  null: false
-    t.integer  "points",       default: 0, null: false
-    t.datetime "completed_at"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "player_id",              null: false
+    t.integer  "game_id",                null: false
+    t.integer  "points",     default: 0, null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "stats", ["game_id"], name: "index_stats_on_game_id", using: :btree
