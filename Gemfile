@@ -13,7 +13,6 @@ gem 'uglifier'
 
 gem 'tzinfo-data'
 
-#gem 'foundation-rails'
 gem 'therubyracer', platforms: :ruby
 gem 'less-rails'
 gem 'twitter-bootstrap-rails'
