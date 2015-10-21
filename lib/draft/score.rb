@@ -1,43 +1,52 @@
 module Draft
   class Score
-    SettledContestError = Class.new(StandardError)
+    SettledContestError = Class.new(ArgumentError)
 
     def initialize(contest:)
       @contest = contest
     end
 
     def settle!
-      ensure_valid_contest!
+      raise_settled_contest! if @contest.settled?
+
+      # raise_unfinished_games! if @contest.games_remain? # TODO
+
+      refund! if @contest.contestants.none?
+
+      user_score = roster_for_contest(@contest.user).
+        first_or_initialize.
+        score
 
       @contest.contestants.each do |contestant|
-	contestant_score = roster_for_contest(contestant).score
+        contestant_score = roster_for_contest(contestant).
+          first_or_initialize.
+          score
 
-	if contestant_score == user_score
-	  declare_draw!(contestant)
-	else
-	  if contestant_score > user_score
-	    declare_winner!(contestant)
-	  else
-	    declare_winner!(@contest.user)
-	  end
+        if contestant_score == user_score
+          declare_draw!(contestant)
+        else
+          if contestant_score > user_score
+            declare_winner!(contestant)
+          else
+            declare_winner!(@contest.user)
+          end
 	end
       end
     end
 
     private
 
-    def ensure_valid_contest!
-      if @contest.settled?
-	raise SettledContestError, "Contest has been settled already"
-      end
+    def raise_settled_contest!
+      raise SettledContestError
     end
 
-    def declare_draw!(user)
+    def declare_draw!(contestant)
       ActiveRecord::Base.transaction do
 	@contest.update!(settled_at: Time.now)
 
-	user.update!(credit: user.credit + @contest.entry)
-	@contest.user.update!(credit: @contest.user.credit + @contest.entry)
+        [contestant, @contest.user].each do |user|
+          user.update!(credit: user.credit + @contest.entry)
+        end
       end
     end
 
@@ -49,12 +58,17 @@ module Draft
       end
     end
 
-    def user_score
-      @_user_score ||= roster_for_contest(@contest.user).score
+    def refund!
+      ActiveRecord::Base.transaction do
+	@contest.update!(settled_at: Time.now)
+
+        refund_amount = @contest.entry * @contest.max_entries
+        @contest.user.update!(credit: @contest.user.credit + refund_amount)
+      end
     end
 
     def roster_for_contest(user)
-      Roster.where(contest: @contest, user: user).first
+      Roster.where(contest: @contest, user: user)
     end
   end
 end

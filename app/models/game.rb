@@ -3,6 +3,9 @@ class Game < ActiveRecord::Base
 
   belongs_to :round
 
+  has_many :contests,
+    through: :round
+
   belongs_to :home_team,
     class_name: "Team"
 

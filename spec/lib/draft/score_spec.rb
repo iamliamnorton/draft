@@ -1,26 +1,76 @@
 require 'rails_helper'
 
 RSpec.describe Draft::Score, type: :model do
-  let(:contest) { create(:contest) }
+  let(:contest) { create(:contest, user: user) }
+  let(:user) { create(:user) }
 
-  describe "#settle!" do # TODO
-    it "raises an exception for a settled contest" do
+  describe "#settle!" do
+    let(:draft_score) { Draft::Score.new(contest: contest) }
+
+    context "with a settled contest" do
+      let(:contest) { create(:settled_contest) }
+
+      it "raises an exception" do
+        expect { draft_score.settle! }.to raise_error(ArgumentError)
+      end
     end
 
-    it "adds credit to the winners account" do
-    end
-
-    it "sets the contests settled_at" do
-    end
-
-    context "when a draw occurs" do
-      it "adds credit to the users account" do
+    context "with no contestants" do
+      it "refunds the credits to the users account" do
+        expect { draft_score.settle! }.
+          to change { contest.user.credit }.
+          by contest.entry * contest.max_entries
       end
 
-      it "adds credit to the contestants account" do
+      it "sets the contest #settled_at" do
+        expect { draft_score.settle! }.
+          to change { contest.settled_at }
+      end
+    end
+
+    context "with contestants" do
+      let!(:contestant) { create(:entry, contest: contest).user }
+
+      context "when scores are drawn" do
+        before { contestant }
+
+        it "refunds credit to user" do
+          expect { draft_score.settle! }.
+            to change { user.credit }.
+            by contest.entry
+        end
+
+        it "refunds credit to contestant" do
+          expect { draft_score.settle! }.
+            to change { contestant.reload.credit }.
+            by contest.entry
+        end
+
+        it "sets the contest #settled_at" do
+          expect { draft_score.settle! }.
+            to change { contest.settled_at }
+        end
       end
 
-      it "sets the contests settled_at" do
+      context "when there is a winner" do
+        let!(:contestant) { create(:entry, contest: contest).user }
+        let!(:roster) { create(:roster, contest: contest, user: user) }
+
+        let!(:game) { create(:game, round: contest.round) }
+        let!(:player) { create(:player, team: game.home_team) }
+        let!(:draft_pick) { create(:draft_pick, roster: roster, player: player) }
+        let!(:stat) { create(:stat, game: game, player: player) }
+
+        it "awards credits to winner" do
+          expect { draft_score.settle! }.
+            to change { contest.user.credit }.
+            by contest.prize
+        end
+
+        it "sets the contest #settled_at" do
+          expect { draft_score.settle! }.
+            to change { contest.settled_at }
+        end
       end
     end
   end
