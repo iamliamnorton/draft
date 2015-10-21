@@ -50,11 +50,19 @@ class Contest < ActiveRecord::Base
       less_than_or_eqaul_to: 100_000
     }
 
-  def self.open
-    joins(:round).merge(Round.open)
+  def self.unsettled
+    where(settled_at: nil)
   end
 
-  delegate :open?, to: :round, prefix: true
+  def self.open
+    unsettled.
+      joins(:round).
+      merge(Round.open)
+  end
+
+  delegate :open?,
+    to: :round,
+    prefix: true
 
   def prize
     Integer 2 * entry * WIN_SHARE

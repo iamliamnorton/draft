@@ -21,6 +21,20 @@ RSpec.describe Contest, type: :model do
     end
   end
 
+  describe ".unsettled" do
+    it "returns unsettled contests" do
+      create(:contest)
+      create(:closed_contest)
+
+      settled_contest = create(:settled_contest)
+
+      aggregate_failures do
+        expect(Contest.unsettled).not_to include(settled_contest)
+        expect(Contest.unsettled.count).to eq(2)
+      end
+    end
+  end
+
   describe ".open" do
     it "returns contests in open rounds" do
       create(:contest, round: create(:closed_round))
