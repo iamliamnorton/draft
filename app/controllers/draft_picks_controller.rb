@@ -24,8 +24,7 @@ class DraftPicksController < ApplicationController
       for_user(current_user).
       first
 
-    if roster && draft_pick = roster.draft_picks.find(params[:id])
-      draft_pick.destroy
+    if roster && roster.draft_picks.find(params[:id]).destroy
       flash[:notice] = 'Player removed from roster.'
     end
 

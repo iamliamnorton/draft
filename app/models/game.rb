@@ -27,4 +27,8 @@ class Game < ActiveRecord::Base
   def self.include_players
     includes(home_team: [:players], away_team: [:players])
   end
+
+  def completed?
+    !!completed_at
+  end
 end

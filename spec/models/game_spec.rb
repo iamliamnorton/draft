@@ -36,4 +36,26 @@ RSpec.describe Game, type: :model do
       end
     end
   end
+
+  describe "#completed?" do
+    subject { game.completed? }
+
+    context "for completed games" do
+      let(:game) { create(:completed_game) }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context "for running games" do
+      let(:game) { create(:running_game) }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context "for unstarted games" do
+      let(:game) { create(:game) }
+
+      it { is_expected.to eq(false) }
+    end
+  end
 end
