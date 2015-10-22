@@ -11,13 +11,11 @@ build:
 
 .PHONY: test
 test:
-	docker-compose build && \
-	  docker-compose run app ./ci/env/test.sh ./ci/test.sh
+	docker-compose run app ./ci/env/test.sh ./ci/test.sh
 
 .PHONY: shell
 shell:
-	docker-compose build && \
-	  docker-compose run app bash
+	docker-compose run app bash
 
 .PHONY: run
 run:
