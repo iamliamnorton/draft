@@ -15,4 +15,11 @@ ActiveRecord::Base.transaction do
     password_confirmation: "asdfasdf",
     confirmed_at: Time.now
   )
+  User.create!(
+    email: "admin@email.com",
+    admin: true,
+    password: "asdfasdf",
+    password_confirmation: "asdfasdf",
+    confirmed_at: Time.now
+  )
 end

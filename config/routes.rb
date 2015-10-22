@@ -20,4 +20,9 @@ Rails.application.routes.draw do
     resources :draft_picks,
       only: [:create, :destroy]
   end
+
+  namespace :admin do
+    resources :users,
+      only: [:index]
+  end
 end
