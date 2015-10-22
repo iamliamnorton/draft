@@ -1,15 +1,15 @@
 module Draft
   class Score
     SettledContestError = Class.new(ArgumentError)
+    UnfinishedGamesError = Class.new(ArgumentError)
 
     def initialize(contest:)
       @contest = contest
     end
 
     def settle!
-      raise_settled_contest! if @contest.settled?
-
-      # raise_unfinished_games! if @contest.games_remain? # TODO
+      raise SettledContestError if @contest.settled?
+      raise UnfinishedGamesError unless @contest.games.all?(&:completed?)
 
       refund! if @contest.contestants.none?
 
@@ -35,10 +35,6 @@ module Draft
     end
 
     private
-
-    def raise_settled_contest!
-      raise SettledContestError
-    end
 
     def declare_draw!(contestant)
       ActiveRecord::Base.transaction do
