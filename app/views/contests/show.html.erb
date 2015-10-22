@@ -42,7 +42,9 @@
     <div class="row">
       <div class="panel panel-default">
         <div class="panel-body">
-	  <%= @contest.round.games.map {|g| [g.home_team, g.away_team]}.flatten.map(&:name) %>
+          <% @contest.round.games.each do |game| %>
+            <%= game.away_team.name %> @ <%= game.home_team.name %> /
+          <% end %>
         </div>
       </div>
     </div>
