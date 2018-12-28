@@ -4,9 +4,7 @@
 
 DraftKings, FanDuel, MoneyBall. Fantasy sports betting apps.
 
-Wanted to see how hard it was. Not that hard was the answer.
-
-They make serious $$$ doing this crap. **If only we could harness this power for good...**
+Wanted to see how hard it was.
 
 This is a Rails 4.2 app using Postgres. Far too many tests for a proof of concept.
 
